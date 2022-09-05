@@ -15,9 +15,10 @@ class CategoriesImport implements ToModel
     public function model(array $row)
     {
         return new Category([
-            //
             'name' => $row[0],
-            'parent_id' => $row[1]
+            'parent_id' => $row[1],
+            'ngayTao' => strtotime(date('Y-m-d H:i:s')),
+            'ngayCapNhat' => strtotime(date('Y-m-d H:i:s')),
         ]);
     }
 }

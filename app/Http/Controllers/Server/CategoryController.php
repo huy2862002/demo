@@ -68,13 +68,19 @@ class CategoryController extends Controller
         $new_category->update_category($category, $request->name, $request->parent_id);
         return redirect()->route('server.category.list')->with('success', 'Cập Nhật Thành Công !');
     }
-    public function export() 
+    public function export()
     {
         return Excel::download(new CategoriesExport, 'categories.xlsx');
     }
-    public function import(Request $request) 
+    public function import(Request $request)
     {
         $path = $request->file;
+        $accept = ['xlsx'];
+        $fileExtension = $path->getClientOriginalExtension();
+        if(!in_array($fileExtension, $accept)){
+            return redirect()->route('server.category.addForm')->with('error', 'Chỉ Chấp Nhận File Excel (.xlsx) !');
+        }
+
         Excel::import(new CategoriesImport, $path);
         return redirect()->route('server.category.list');
     }

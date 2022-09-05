@@ -27,13 +27,16 @@ class Address extends Model
     // Lấy ra province 
     public function get_province()
     {
-        $province = Province::select('province.*')->get();
+        $province = Province::select('province.*')
+        ->get();
         return $province;
     }
     // Lấy ra District
     public function get_district()
     {
-        $district = District::select('district.*')->get();
+        $district = District::select('district.*')
+        ->get();
         return $district;
     }
+
 }

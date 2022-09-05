@@ -26,14 +26,10 @@
 @section('content')
 <div class="content" style="padding: 0 12px;">
     @if(count($list_category) > 0)
-
-
-
     @if(session()->has('success'))
     <li class="login-box-msg text-success"> {{session()->get('success')}}</li>
     @endif
-    <div class="top" style="display:grid; grid-template-columns:1fr 1fr 7fr; grid-gap:31px">
-
+    <div class="top" style="display:grid; grid-template-columns:1fr 1fr 8fr; grid-gap:31px">
         <a href="{{route('server.category.export')}}"><button class="btn btn-info">Export Excel</button></a>
 
         <a href="{{route('server.category.addForm')}}"><button class="btn btn-success">Thêm Mới</button></a>
@@ -51,13 +47,13 @@
                 <th scope="col">#ID</th>
                 <th scope="col">TÊN DANH MỤC</th>
                 <th scope="col"></th>
-                <th scope="col"></th>
             </tr>
         </thead>
         <tbody id="tbody">
             @foreach($list_category as $item)
             <tr>
                 <td>{{$item->id}}</td>
+                
                 <td>{{str_repeat('---', $item['level']).$item->name}}</td>
                 <td>
                     <form action="{{route('server.category.delete', $item->id)}}" method="post">
@@ -71,6 +67,7 @@
                     <a href="{{route('server.category.editForm', $item->id)}}"><button class="btn btn-warning"><i class="nav-icon fas fa-edit"></i></button></a>
                 </td>
             </tr>
+
             @endforeach
         </tbody>
     </table>
@@ -90,6 +87,20 @@
             CallApi(url = "{{route('categoryData')}}", value)
         })
 
+        /* $('#checkAll').on('click', function() {
+            var checkboxes = document.querySelectorAll('input[name="check"]');
+            if ($(this).prop("checked") == true) {
+                for (var checkbox of checkboxes) {
+                    checkbox.checked = this.checked;
+                }
+            } else if ($(this).prop("checked") == false) {
+                for (var checkbox of checkboxes) {
+                    checkbox.checked = this.unchecked;
+                }
+            }
+
+        }); */
+
         function CallApi(url, data) {
             $.ajax({
                 url: url,
@@ -107,8 +118,8 @@
             let url = window.location.origin;
 
             let html = data.map(function(value) {
-                let call_ngayTao = new Date('YY-MM-DD',value.ngayCapNhat) ;  
-               
+                let call_ngayTao = new Date('YY-MM-DD', value.ngayCapNhat);
+
                 console.log(call_ngayTao)
                 return `
                         <tr>

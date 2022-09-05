@@ -12,6 +12,6 @@ class CategoriesExport implements FromCollection
     */
     public function collection()
     {
-        return Category::all();
+        return Category::select('name','parent_id')->get();
     }
 }

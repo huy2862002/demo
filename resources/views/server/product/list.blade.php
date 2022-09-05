@@ -27,13 +27,13 @@
 @section('content')
 <div class="content" style="padding:0 12px">
     @if(count($list_product) > 0)
-    
+
     @if(session()->has('success'))
     <li class="login-box-msg text-success"> {{session()->get('success')}}</li>
     @endif
     <div class="top" style="display:grid; grid-template-columns:1fr 1fr 7fr; grid-gap:31px">
 
-    <a href="{{route('server.product.export')}}"><button class="btn btn-info">Export Excel</button></a>
+        <a href="{{route('server.product.export')}}"><button class="btn btn-info">Export Excel</button></a>
 
         <a href="{{route('server.product.addForm')}}"><button class="btn btn-success">Thêm Mới</button></a>
         <div class="search" style="display:flex; justify-content:space-between">
@@ -52,8 +52,6 @@
                 <th scope="col">TÊN DANH MỤC</th>
                 <th scope="col">ẢNH</th>
                 <th scope="col">GIÁ</th>
-                <th scope="col">MÔ TẢ NGẮN</th>
-                <th scope="col">MÔ TẢ SẢN PHẨM</th>
                 <th scope="col">#</th>
                 <th scope="col">#</th>
             </tr>
@@ -70,8 +68,6 @@
                 @endforeach
                 <td><img height="100px" width="100px" src="{{asset($item->avatar)}}" alt=""></td>
                 <td>{{number_format($item->price,0,',',',')}} VNĐ</td>
-                <td>{{$item->moTaNgan}}</td>
-                <td>{{$item->moTaSP}}</td>
                 <td>
                     <form action="{{route('server.product.delete', $item->id)}}" method="post">
                         @csrf

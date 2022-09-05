@@ -244,5 +244,4 @@
   <script src="{{asset('server/dist/js/admin.js')}}"></script>
 </body>
 @yield('script')
-
 </html>

@@ -27,7 +27,7 @@
                             @foreach(session()->get('cart') as  $item)
                             <tr class="text-center">
                                 <td class="product-remove">
-                                    <form action="" method="post">
+                                    <form action="{{route('delCart', $item['id'])}}" method="post">
                                         @csrf
                                         @method('delete')
                                     <button><span class="ion-ios-close"></span></button>

@@ -15,7 +15,7 @@ class Category extends Model
     protected $fillable = [
         'name',
         'parent_id',
-        'ngaytao',
+        'ngayTao',
         'ngayCapNhat'
     ];
     // Thêm Mới Danh Mục

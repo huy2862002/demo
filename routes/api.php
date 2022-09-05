@@ -25,6 +25,9 @@ Route::get('select-danh-muc',[CategoryApiController::class, 'selectData'])->name
 Route::get('select-san-pham',[ProductApiController::class, 'selectData'])->name('productData');
 Route::get('select-region',[AddressController::class, 'provinceData'])->name('provinceData');
 Route::get('select-district',[AddressController::class, 'districtData'])->name('districtData');
+Route::get('shipping-fee',[AddressController::class, 'shipData'])->name('shipData');
+
+
 
 
 

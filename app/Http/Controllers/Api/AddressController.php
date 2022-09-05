@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\District;
 use App\Models\Province;
+use App\Models\Ship;
 use Illuminate\Http\Request;
 
 class AddressController extends Controller
@@ -28,5 +29,13 @@ class AddressController extends Controller
             'status' => 200
         ]);
     }
-
+    public function shipData(Request $request)
+    {
+        $new_ship = new Ship();
+        $ship = $new_ship->ship_fee($request->data);
+        return response()->json([
+            'data' => $ship,
+            'status' => 200
+        ]);
+    }
 }

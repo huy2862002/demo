@@ -44,6 +44,11 @@
                         {{session()->get('error')}}
                     </span>
                     @endif
+                    @if(session()->has('success'))
+                    <span class="txt1" style="color:green">
+                        {{session()->get('success')}}
+                    </span>
+                    @endif
                     <div class="wrap-input100 validate-input" data-validate="Valid email is: address@gmail.com">
                         <input class="input100" type="text" name="email">
                         <span class="focus-input100" data-placeholder="Email"></span>
@@ -70,7 +75,7 @@
                             Bạn chưa có tài khoản ?
                         </span>
 
-                        <a class="txt2" href="#">
+                        <a class="txt2" href="{{route('registerForm')}}">
                             Đăng Ký
                         </a>
                     </div>
