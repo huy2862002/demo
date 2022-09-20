@@ -3,7 +3,6 @@
 @section('title_tab', 'Thông Tin Đơn Hàng')
 @section('content')
 <div class="content" style="padding:0 12px">
-    
     @if(count($order_detail) > 0)
     <div class="pdf">
     <a href="{{route('server.order.export', $order->id)}}"><button class="btn btn-warning">Export PDF</button></a>
@@ -44,6 +43,3 @@
     </div>
 </div>
 @endsection
-<script>
-
-</script>

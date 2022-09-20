@@ -17,7 +17,7 @@ class ShipsImport implements ToModel
         return new Ship([
             'district_id' => $row[0],
             'province_id' => $row[1],
-            'weight' => $row[2],
+            'ship_fee' => $row[2],
         ]);
     }
 }

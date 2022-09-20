@@ -23,8 +23,9 @@ return new class extends Migration
             $table->string('address',50);
             $table->unsignedInteger('status');
             $table->unsignedInteger('total_money');
-            $table->unsignedInteger('ngayTao');
-            $table->unsignedInteger('ngayCapNhat');
+            $table->string('email', 31);
+            $table->unsignedInteger('created_at');
+            $table->unsignedInteger('updated_at');
         });
     }
 

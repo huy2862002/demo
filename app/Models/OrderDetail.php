@@ -14,8 +14,9 @@ class OrderDetail extends Model
         'order_id',
         'product_id',
         'quantity',
+        'created_at',
+        'updated_at'
     ];
-
     // Thêm chi tiết Đơn Hàng
     public function add_new($order_id, $product_id, $quantity)
     {
@@ -23,8 +24,8 @@ class OrderDetail extends Model
         $new->order_id = $order_id;
         $new->product_id = $product_id;
         $new->quantity = $quantity;
-        $new->ngayTao = strtotime(date('Y-m-d H:i:s'));
-        $new->ngayCapNhat = strtotime(date('Y-m-d H:i:s'));
+        $new->created_at = strtotime(date('Y-m-d H:i:s'));
+        $new->updated_at = strtotime(date('Y-m-d H:i:s'));
         $new->save();
     }
 // Hiển Thị Chi Tiết Đơn Hàng

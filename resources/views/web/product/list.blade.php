@@ -1,9 +1,7 @@
 @extends('layouts.web.main')
 @section('title', 'Sản Phẩm')
 @section('content_banner')
-<div class="row">
-
-</div>
+<div class="row"></div>
 @endsection
 @section('content')
 <section class="ftco-section bg-light">
@@ -48,7 +46,7 @@
                                         </div>
                                     </div>
 
-                                    
+
                                 <p class="bottom-area d-flex px-3">
                                     <button class="add-to-cart text-center py-2 mr-1"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></button>
                                     <button href="#" class="buy-now text-center py-2">Buy now<span><i class="ion-ios-cart ml-1"></i></span></button>

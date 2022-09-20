@@ -2,18 +2,14 @@
 
 namespace App\Http\Controllers\Server;
 
-use App\Exports\CategoriesExport;
 use App\Http\Controllers\common\DeQuyController;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryRequest;
-use App\Imports\CategoriesImport;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 
 class CategoryController extends Controller
 {
-    //
     public function list()
     {
         $new_category = new Category();
@@ -27,9 +23,23 @@ class CategoryController extends Controller
 
     public function delete(Category $category)
     {
+        $new_product = new Product();
         $new_category = new Category();
-        $new_category->delete_category($category);
-        return redirect()->route('server.category.list')->with('success', 'Xóa Thành Công !');
+        $category_with_parent_id = $new_category->get_where_parent_id($category->id);
+        if (count($category_with_parent_id) > 0) {
+            foreach ($category_with_parent_id as $item) {
+                $item->parent_id = 0;
+                $item->save();
+            }
+        }
+        $product_with_category_id = $new_product->get_with_category_id($category->id);
+        if (count($product_with_category_id) > 0) {
+            foreach ($product_with_category_id as $item) {
+                $item->delete();
+            }
+        }
+        $category->delete();
+        return redirect()->route('server.category.list')->with('success', 'Delete Successfully !');
     }
 
     public function addForm()
@@ -43,11 +53,11 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function postAdd(CategoryRequest $request)
+    public function postAdd(Request $request)
     {
         $new_category = new Category();
         $new_category->add_new($request->name, $request->parent_id);
-        return redirect()->route('server.category.list')->with('success', 'Thêm Mới Thành Công !');
+        return redirect()->route('server.category.list')->with('success', 'Add Successfully !');
     }
 
     public function editForm(Category $category)
@@ -57,31 +67,15 @@ class CategoryController extends Controller
         $category_other = $new_category->get_other($category->id);
         $list_category = $new_deQuy->data_rank($category_other, 0);
         return view('server.category.edit', [
-            'data_category' =>  $list_category,
+            'data_category' => $list_category,
             'category' => $category,
         ]);
     }
 
-    public function putEdit(Category $category, CategoryRequest $request)
+    public function putEdit(Category $category, Request $request)
     {
         $new_category = new Category();
         $new_category->update_category($category, $request->name, $request->parent_id);
-        return redirect()->route('server.category.list')->with('success', 'Cập Nhật Thành Công !');
-    }
-    public function export()
-    {
-        return Excel::download(new CategoriesExport, 'categories.xlsx');
-    }
-    public function import(Request $request)
-    {
-        $path = $request->file;
-        $accept = ['xlsx'];
-        $fileExtension = $path->getClientOriginalExtension();
-        if(!in_array($fileExtension, $accept)){
-            return redirect()->route('server.category.addForm')->with('error', 'Chỉ Chấp Nhận File Excel (.xlsx) !');
-        }
-
-        Excel::import(new CategoriesImport, $path);
-        return redirect()->route('server.category.list');
+        return redirect()->route('server.category.list')->with('success', 'Update Successfully !');
     }
 }

@@ -23,14 +23,12 @@
     </div>
 </li>
 @endsection
-
 @section('content')
 <div class="content" style="padding:0 12px">
     @if(count($list_order) > 0)
     <table class="table table-striped">
         <thead>
             <tr>
-               
                 <th scope="col">ID</th>
                 <th scope="col">TÊN KHÁCH HÀNG</th>
                 <th scope="col">SỐ ĐIỆN THOẠI</th>
@@ -59,11 +57,19 @@
                         <button id="btn-del" class="btn btn-danger"><i class="nav-icon fas fa-trash"></i></button>
                     </form>
                 </td>
-                <td>
-                    <a href="{{route('server.product.editForm', $item->id)}}"><button class="btn btn-warning"><i class="nav-icon fas fa-edit"></i></button></a>
+                <td style="text-align: right;">
+                    @if($item->status == 3 || $item->status == 5 || $item->status == 4)
+                    @elseif($item->status == 2)
+                    <a href="{{route('server.order.reject', $item->id)}}"><button class="btn btn-danger">Đơn K0 Nhận</button></a>
+                    <a href="{{route('server.order.success', $item->id)}}"><button class="btn btn-success">Hoàn Tất</button></a>
+                    @else
+                    <a href="{{route('server.order.delivering', $item->id)}}"><button class="btn btn-warning">Giao Hàng</button></a>
+                    <a href="{{route('server.order.reject', $item->id)}}"><button class="btn btn-danger">Đơn K0 Nhận</button></a>
+                    <a href="{{route('server.order.success', $item->id)}}"><button class="btn btn-success">Hoàn Tất</button></a>
+                    @endif
                 </td>
                 <td>
-                   <a href="{{route('server.order.detail', $item->id)}}"> <button id="detail" type="button" class="btn btn-info"><i class="nav-icon fas fa-search"></i></button></a>
+                    <a href="{{route('server.order.detail', $item->id)}}"> <button id="detail" type="button" class="btn btn-info"><i class="nav-icon fas fa-search"></i></button></a>
                 </td>
             </tr>
             @endforeach
@@ -79,6 +85,3 @@
     @endif
 </div>
 @endsection
-<script>
-
-</script>

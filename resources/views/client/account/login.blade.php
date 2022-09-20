@@ -50,17 +50,17 @@
                     </span>
                     @endif
                     <div class="wrap-input100 validate-input" data-validate="Valid email is: address@gmail.com">
-                        <input class="input100" type="text" name="email">
-                        <span class="focus-input100" data-placeholder="Email"></span>
+                        <input class="input100" type="text" name="email" value="{{Cookie::get('email') ? Cookie::get('email') : ''}}">
+                        <span class="focus-input100" @if(!Cookie::get('password')) data-placeholder="Email" @endif></span>
                     </div>
                     <div class="wrap-input100 validate-input" data-validate="Enter password">
                         <span class="btn-show-pass">
                             <i class="zmdi zmdi-eye"></i>
                         </span>
-                        <input class="input100" type="password" name="password">
-                        <span class="focus-input100" data-placeholder="Password"></span>
+                        <input class="input100" type="password" name="password" value="{{Cookie::get('password') ? Cookie::get('password') : ''}}">
+                        <span class="focus-input100" @if(!Cookie::get('password')) data-placeholder="Password" @endif></span>
                     </div>
-
+                    <input type="checkbox" checked name="checkbox"> <span style="color: #999999;">Remember</span>
                     <div class="container-login100-form-btn">
                         <div class="wrap-login100-form-btn">
                             <div class="login100-form-bgbtn"></div>

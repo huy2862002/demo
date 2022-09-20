@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('id',10);
             $table->unsignedInteger('province_id');
             $table->unsignedInteger('district_id');
-            $table->unsignedInteger('weight');
+            $table->unsignedInteger('ship_fee');
         });
     }
 

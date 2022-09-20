@@ -31,34 +31,37 @@ class OrderController extends Controller
         $order_detail = $new_detail->order_detail($order->id);
         return view('server.order.detail', [
             'order_detail' => $order_detail,
-            'order'=>$order
+            'order' => $order
         ]);
     }
 
-    public function export(Order $order){
+    public function export(Order $order)
+    {
         $new_detail = new OrderDetail();
         $order_detail = $new_detail->order_detail($order->id);
         $data = [
             'title' => 'Thank you for shopping at QWERTY Shop !',
-            'info' => $order_detail ,
-            'order' =>$order
+            'info' => $order_detail,
+            'order' => $order
         ];
-        
+
         $pdf = PDF::loadView('server.order.exportPDF', $data);
-      
-    
+
+
         return $pdf->stream('hoa-don.pdf');
     }
 
-    public function ship_list(){
+    public function ship_list()
+    {
         $new_ship = new Ship();
         $ship_list = $new_ship->ship_list();
-        return view('server.order.ship_list',[
-            'ship_list'=>$ship_list
+        return view('server.order.ship_list', [
+            'ship_list' => $ship_list
         ]);
     }
 
-    public function add_ship(){
+    public function add_ship()
+    {
         return view('server.order.add_ship');
     }
 
@@ -67,11 +70,32 @@ class OrderController extends Controller
         $path = $request->file;
         $accept = ['xlsx'];
         $fileExtension = $path->getClientOriginalExtension();
-        if(!in_array($fileExtension, $accept)){
-            return redirect()->route('server.ship.addForm')->with('error', 'Chỉ Chấp Nhận File Excel (.xlsx) !');
+        if (!in_array($fileExtension, $accept)) {
+            return redirect()->route('server.ship.addForm')->with('error', 'Chỉ chấp nhận file excel (.xlsx) !');
         }
-
         Excel::import(new ShipsImport, $path);
-        return redirect()->route('server.ship.list');
+        return redirect()->route('server.ship.list')->with('success', 'Thêm mới thành công !');
     }
+
+    public function delivering(Order $order)
+    {
+        $order->status = 2;
+        $order->save();
+        return redirect()->back();
+    }
+    public function reject(Order $order)
+    {
+        $order->status = 5;
+        $order->save();
+        return redirect()->back();
+    }
+    public function success(Order $order)
+    {
+        $order->status = 3;
+        $order->save();
+        return redirect()->back();
+    }
+
+
+
 }

@@ -15,25 +15,27 @@ class Category extends Model
     protected $fillable = [
         'name',
         'parent_id',
-        'ngayTao',
-        'ngayCapNhat'
+        'created_at',
+        'updated_at'
     ];
     // Thêm Mới Danh Mục
     public function add_new($name, $parent_id)
     {
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
         $new = new Category();
         $new->name = $name;
         $new->parent_id = $parent_id;
-        $new->ngayTao = strtotime(date('Y-m-d H:i:s'));
-        $new->ngayCapNhat = strtotime(date('Y-m-d H:i:s'));
+        $new->created_at = strtotime(date('Y-m-d H:i:s'));
+        $new->updated_at = strtotime(date('Y-m-d H:i:s'));
         $new->save();
     }
     // Update Danh Mục
     public function update_category($category, $name, $parent_id)
     {
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
         $category->name = $name;
         $category->parent_id = $parent_id;
-        $category->ngayCapNhat = strtotime(date('Y-m-d H:i:s'));
+        $category->updated_at = strtotime(date('Y-m-d H:i:s'));
         $category->save();
     }
 
@@ -56,10 +58,10 @@ class Category extends Model
     // Lấy ra danh sách có chung parent_id
     public function get_where_parent_id($parent_id)
     {
-        $all = Category::select('categories.*')
+        $get_where_parent_id = Category::select('categories.*')
             ->where('parent_id', '=', $parent_id)
             ->get();
-        return $all;
+        return $get_where_parent_id;
     }
     // Lấy ra danh sách danh mục khác 1 id
     public function get_other($category_id)
@@ -86,4 +88,5 @@ class Category extends Model
             ->get();
         return $all;
     }
+
 }

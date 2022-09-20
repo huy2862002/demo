@@ -15,7 +15,7 @@ class Ship extends Model
     protected $fillable = [
         'province_id',
         'district_id',
-        'weight'
+        'ship_fee'
     ];
 
     public function ship_fee($district_id){

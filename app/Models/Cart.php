@@ -11,8 +11,6 @@ class Cart extends Model
 {
     use HasFactory;
 
-
-
     public function addCart($product, $quantity)
     {
         $cart = [];
@@ -23,9 +21,11 @@ class Cart extends Model
             $cart[$product->id] = [
                 'id' => $product->id,
                 'name' => $product->name,
-                'avatar' => $product->avatar,
+                'image' => $product->image,
                 'price' => $product->price,
+                'price_discount' => $product->price_discount,
                 'quantity' => $quantity,
+                'option_id'=>$product->option_id
             ];
         }
         session()->put('cart', $cart);
@@ -36,7 +36,7 @@ class Cart extends Model
         $totalMoney = 0;
         if ($session != null) {
             foreach ($session as $item) {
-                $totalMoney += $item['price'] * $item['quantity'];
+                $totalMoney += $item['price_discount'] * $item['quantity'];
             };
         }
         return $totalMoney;

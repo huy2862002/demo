@@ -20,8 +20,8 @@ return new class extends Migration
             $table->unsignedInteger('province_id');
             $table->unsignedInteger('district_id');
             $table->string('address',50);
-            $table->unsignedInteger('ngayTao');
-            $table->unsignedInteger('ngayCapNhat');
+            $table->unsignedInteger('created_at');
+            $table->unsignedInteger('updated_at');
         });
     }
 

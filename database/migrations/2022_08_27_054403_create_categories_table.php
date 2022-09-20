@@ -17,8 +17,8 @@ return new class extends Migration
             $table->increments('id',10);
             $table->string('name',30);
             $table->unsignedInteger('parent_id');
-            $table->unsignedInteger('ngayTao');
-            $table->unsignedInteger('ngayCapNhat');
+            $table->unsignedInteger('created_at');
+            $table->unsignedInteger('updated_at');
         });
     }
 

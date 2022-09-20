@@ -27,6 +27,8 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
     <script src="{{asset('web/js/google-map.js')}}"></script>
     <script src="{{asset('web/js/main.js')}}"></script>
+    <script src="{{asset('web/js/checkout_validate.js')}}"></script>
+    <script src="{{asset('web/js/update_quantity.js')}}"></script>
     @yield('script')
 </body>
 

@@ -42,13 +42,13 @@
     <div class="container">
         <div class="row">
             @foreach($latest_product as $item)
-            <div class="col-sm col-md-6 col-lg ftco-animate">
-                <form action="{{route('addToCart', $item->id)}}" method="post">
+            <div class="col-sm col-md-12 col-lg ftco-animate">
+                <form action="" method="post">
                     @csrf
                     <div class="product">
-                        <a href="{{route('product.detail', $item->id)}}" class="img-prod"><img class="img-fluid" src="{{asset($item->avatar)}}" alt="Colorlib Template">
-                            @if($item->discount > 0)
-                            <span class="status">-{{$item->discount}}%</span>
+                        <a href="{{route('product.detail', $item->id)}}" class="img-prod"><img class="img-fluid" src="{{asset($item->image)}}" alt="Colorlib Template">
+                            @if($item->price - $item->price_discount > 0)
+                            <span class="status">-{{round(($item->price - $item->price_discount)/ $item->price * 100, 0)}}%</span>
                             <div class="overlay"></div>
                             @endif
                         </a>
@@ -56,10 +56,10 @@
                             <h3><a href="#">{{$item->name}}</a></h3>
                             <div class="">
                                 <div class="price" style="font-size: 14px;">
-                                    @if($item->discount > 0)
-                                    <p class="price"><span class="mr-2 price-dc">{{number_format($item->price,0,',',',')}} VNĐ</span><span class="price-sale">{{number_format($item->price,0,',',',')}} VNĐ</span></p>
+                                    @if($item->price_discount < $item->price)
+                                        <p class="price"><span class="mr-2 price-dc">{{number_format($item->price,0,',',',')}} VNĐ</span><span class="price-sale">{{number_format($item->price_discount,0,',',',')}} VNĐ</span></p>
                                     @else
-                                    <p class="price"><span class="price-sale">{{number_format($item->price,0,',',',')}} VNĐ</span></p>
+                                        <p class="price"><span class="price-sale">{{number_format($item->price,0,',',',')}} VNĐ</span></p>
                                     @endif
                                 </div>
                             </div>
@@ -136,18 +136,18 @@
                 <form action="{{route('addToCart', $item->id)}}" method="post">
                     @csrf
                     <div class="product">
-                        <a href="{{route('product.detail',$item->id)}}" class="img-prod"><img class="img-fluid" src="{{asset($item->avatar)}}" alt="Colorlib Template">
-                            @if($item->discount > 0)
-                            <span class="status">-{{$item->discount}}%</span>
-                            <div class="overlay"></div>
+                        <a href="{{route('product.detail', $item->id)}}" class="img-prod"><img class="img-fluid" src="{{asset($item->image)}}" alt="Colorlib Template">
+                            @if($item->price - $item->price_discount > 0)
+                                <span class="status">-{{round(($item->price - $item->price_discount)/ $item->price * 100, 0)}}%</span>
+                                <div class="overlay"></div>
                             @endif
                         </a>
                         <div class="text py-3 px-3">
                             <h3><a href="#">{{$item->name}}</a></h3>
                             <div class="">
                                 <div class="price" style="font-size: 14px;">
-                                    @if($item->discount > 0)
-                                    <p class="price"><span class="mr-2 price-dc">{{number_format($item->price,0,',',',')}} VNĐ</span><span class="price-sale">{{number_format($item->price,0,',',',')}} VNĐ</span></p>
+                                    @if($item->price_discount < $item->price)
+                                    <p class="price"><span class="mr-2 price-dc">{{number_format($item->price,0,',',',')}} VNĐ</span><span class="price-sale">{{number_format($item->price_discount,0,',',',')}} VNĐ</span></p>
                                     @else
                                     <p class="price"><span class="price-sale">{{number_format($item->price,0,',',',')}} VNĐ</span></p>
                                     @endif
@@ -167,12 +167,12 @@
                                     </p>
                                 </div>
                             </div>
-                           
+
                                 <p class="bottom-area d-flex px-3">
                                     <button class="add-to-cart text-center py-2 mr-1"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></button>
                                     <button href="#" class="buy-now text-center py-2">Buy now<span><i class="ion-ios-cart ml-1"></i></span></button>
                                 </p>
-                           
+
                         </div>
                     </div>
                 </form>

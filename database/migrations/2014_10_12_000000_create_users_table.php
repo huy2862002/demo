@@ -23,8 +23,8 @@ return new class extends Migration
             $table->unsignedInteger('role');
             $table->unsignedInteger('status');
             $table->rememberToken();
-            $table->unsignedInteger('ngayTao');
-            $table->unsignedInteger('ngayCapNhat');
+            $table->unsignedInteger('created_at');
+            $table->unsignedInteger('updated_at');
         });
     }
 
