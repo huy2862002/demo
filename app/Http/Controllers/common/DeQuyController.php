@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class DeQuyController extends Controller
 {
     //
-    public function data_rank($data, $parent_id = 0, $level = 0)
+    public function data_rank($data, $parent_id = 0, $level = 0) //
     {
         $result = [];
         foreach ($data as $item) {

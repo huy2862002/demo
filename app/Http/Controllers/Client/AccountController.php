@@ -22,7 +22,6 @@ class AccountController extends Controller
         return view('client.account.register');
     }
 
-
     public function postLogin(Request $request)
     {
         if (Auth::attempt(
@@ -36,27 +35,21 @@ class AccountController extends Controller
                 Cookie::queue('password', $request->password, 44640);
             }
             return redirect()->back();
-        } else return redirect()->route('loginForm')->with('error', 'Thông tin không chính xác !');
+        } else return redirect()->route('loginForm')->with('error', 'Incorrect information !');
     }
     public function postRegister(Request $request)
     {
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->phone_number = $request->phone_number;
-        $user->role = 1;
-        $user->status = 1;
-        $user->created_at = strtotime(date('Y-m-d H:i:s'));
-        $user->updated_at = strtotime(date('Y-m-d H:i:s'));
-        $user->save();
-        return redirect()->route('loginForm')->with('success', 'Đăng Ký Thành Công !');
+        $new_user = new User();
+        $check = $new_user->check_email_exist($request);
+        if($check == true){
+            return redirect()->route('registerForm')->with('error', 'Email already exists !');
+        }else $new_user->add_new($request);
+        return redirect()->route('loginForm')->with('success', 'Sign up success !');
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
-        // Huỷ toàn bộ session đi
         $request->session()->invalidate();
         // Tạo token mới
         $request->session()->regenerateToken();

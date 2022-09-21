@@ -28,8 +28,8 @@
 
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active"><a href="{{route('home')}}" class="nav-link">Trang Chủ</a></li>
-                <li class="nav-item"><a href="{{route('product.list')}}" class="nav-link">Sản Phẩm</a></li>
+                <li class="nav-item active"><a href="{{route('home')}}" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="{{route('product.list')}}" class="nav-link">Products</a></li>
                 <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
                 <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
                 <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
@@ -38,17 +38,17 @@
                     <a href="" class="nav-link dropdown-toggle" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-user"></span> {{Auth::user()->name}}</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown04">
                         @if(Auth::user()->role == 0)
-                        <a class="dropdown-item" href="{{route('server.dashboard')}}">Quản Trị</a>
+                        <a class="dropdown-item" href="{{route('server.dashboard')}}">Admin</a>
                         @endif
-                        <a class="dropdown-item" href="product-single.html">Thông Tin</a>
-                        <a class="dropdown-item" href="{{route('logout')}}">Đăng Xuất</a>
+                        <a class="dropdown-item" href="product-single.html">Infomation</a>
+                        <a class="dropdown-item" href="{{route('logout')}}">Logout</a>
                     </div>
                 </li>
                 @else
-                <li class="nav-item cta cta-colored"><a href="{{route('loginForm')}}" class="nav-link"><span class="icon-user"></span> Đăng Nhập</a></li>
+                <li class="nav-item cta cta-colored"><a href="{{route('loginForm')}}" class="nav-link"><span class="icon-user"></span> Login</a></li>
                 @endif
-                <li class="nav-item cta cta-colored"><a href="{{route('order')}}" class="nav-link"><span class="icon-copy"></span>Lịch Sử Mua</a></li>
-                <li class="nav-item cta cta-colored"><a href="{{route('showCart')}}" class="nav-link"><span class="icon-shopping_cart"></span>Giỏ Hàng [{{session()->get('cart') ? count(session()->get('cart') ) : 0 }}]</a></li>
+                <li class="nav-item cta cta-colored"><a href="{{route('order')}}" class="nav-link"><span class="icon-copy"></span>Purchase History</a></li>
+                <li class="nav-item cta cta-colored"><a href="{{route('showCart')}}" class="nav-link"><span class="icon-shopping_cart"></span>Shopping Cart [{{session()->get('cart') ? count(session()->get('cart') ) : 0 }}]</a></li>
             </ul>
         </div>
     </div>

@@ -34,4 +34,12 @@ class District extends Model
         ->first();
         return $all;
     }
+
+
+    public function get_all()// Lấy ra tất cả District
+    {
+        $all = District::select('district.*')
+            ->get();
+        return $all;
+    }
 }

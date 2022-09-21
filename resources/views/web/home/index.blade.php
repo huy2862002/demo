@@ -1,5 +1,4 @@
 @extends('layouts.web.main')
-@section('title', 'Trang Chủ')
 @section('content_banner')
 <div class="row">
     <div class="col-md-3 d-flex justify-content-center counter-wrap ftco-animate">
@@ -34,7 +33,7 @@
     <div class="container">
         <div class="row justify-content-center mb-3 pb-3">
             <div class="col-md-12 heading-section text-center ftco-animate">
-                <h2 class="mb-4">Sản Phẩm Mới</h2>
+                <h2 class="mb-4">New Product</h2>
                 <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
             </div>
         </div>
@@ -124,7 +123,7 @@
     <div class="container">
         <div class="row justify-content-center mb-3 pb-3">
             <div class="col-md-12 heading-section text-center ftco-animate">
-                <h2 class="mb-4">Phổ Biến</h2>
+                <h2 class="mb-4">Popular Product</h2>
                 <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
             </div>
         </div>

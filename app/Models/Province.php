@@ -35,4 +35,12 @@ class Province extends Model
         ->first();
         return $all;
     }
+
+    public function get_all() // Lấy tất cả province
+    {
+        $all = Province::select('province.*')
+            ->get();
+        return $all;
+    }
+
 }

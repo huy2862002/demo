@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -24,7 +25,9 @@ class User extends Authenticatable
         'password',
         'phone_number',
         'role',
-        'status'
+        'status',
+        'created_at',
+        'updated_at'
     ];
 
     /**
@@ -46,11 +49,29 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // Tổng số tài khoản
-    public function get_count()
+    public function get_count() // Tổng số tài khoản đang đã đăng ký
     {
-        $all = User::select('users.*')
-            ->count();
-        return $all;
+        $get_count = User::count();
+        return $get_count;
+    }
+
+    public function add_new($request){
+        $new_user = new User();
+        $new_user->name = $request->name;
+        $new_user->email = $request->email;
+        $new_user->password = Hash::make($request->password);
+        $new_user->phone_number = $request->phone_number;
+        $new_user->role = 1;
+        $new_user->status = 1;
+        $new_user->created_at = strtotime(date('Y-m-d H:i:s'));
+        $new_user->updated_at = strtotime(date('Y-m-d H:i:s'));
+        $new_user->save();
+    }
+
+    public function check_email_exist($request){
+        $exist = User::select('users.*')
+            ->where('email', '=', $request->email)
+            ->exists();
+        return $exist;
     }
 }

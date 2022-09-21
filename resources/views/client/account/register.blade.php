@@ -5,32 +5,19 @@
     <title>Đăng Ký</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--===============================================================================================-->
     <link rel="icon" type="image/png" href="{{asset('client/images/icons/favicon.ico')}}" />
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{{asset('client/vendor/bootstrap/css/bootstrap.min.css')}}">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{{asset('client/fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{{asset('client/fonts/iconic/css/material-design-iconic-font.min.css')}}">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{{asset('client/vendor/animate/animate.css')}}">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{{asset('client/vendor/css-hamburgers/hamburgers.min.css')}}">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{{asset('client/vendor/animsition/css/animsition.min.css')}}">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{{asset('client/vendor/select2/select2.min.css')}}">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{{asset('client/vendor/daterangepicker/daterangepicker.css')}}">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{{asset('client/css/util.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('client/css/main.css')}}">
-    <!--===============================================================================================-->
 </head>
-
 <body>
-
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100">
@@ -40,22 +27,24 @@
                             QWERTY
                         </span></a>
                     @if(session()->has('error'))
-                    <span class="txt1" style="color:red">
+                        <div style="background-color: orangered; padding: 12px">
+                    <span class="txt1" style="color:white">
                         {{session()->get('error')}}
                     </span>
+                        </div>
                     @endif
-                    
-                    <div class="wrap-input100 validate-input" >
+
+                    <div class="wrap-input100 validate-input" data-validate="Enter full name">
                         <input class="input100" type="text" name="name">
-                        <span class="focus-input100" data-placeholder="Họ Và Tên"></span>
+                        <span class="focus-input100" data-placeholder="Full Name"></span>
                     </div>
                     <div class="wrap-input100 validate-input" data-validate="Valid email is: address@gmail.com">
                         <input class="input100" type="text" name="email">
                         <span class="focus-input100" data-placeholder="Email"></span>
                     </div>
-                    <div class="wrap-input100 validate-input">
+                    <div class="wrap-input100 validate-input" data-validate="Enter phone number">
                         <input class="input100" type="text" name="phone_number">
-                        <span class="focus-input100" data-placeholder="Số Điện Thoại"></span>
+                        <span class="focus-input100" data-placeholder="Phone Number"></span>
                     </div>
                     <div class="wrap-input100 validate-input" data-validate="Enter password">
                         <span class="btn-show-pass">
@@ -69,18 +58,18 @@
                         <div class="wrap-login100-form-btn">
                             <div class="login100-form-bgbtn"></div>
                             <button class="login100-form-btn">
-                               Đăng Ký
+                               Register
                             </button>
                         </div>
                     </div>
 
                     <div class="text-center p-t-115">
                         <span class="txt1">
-                            Bạn đã có tài khoản ?
+                            Do you already have an account?
                         </span>
 
                         <a class="txt2" href="{{route('loginForm')}}">
-                            Đăng Nhập
+                            Login
                         </a>
                     </div>
                 </form>

@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CategoryApiController;
 use App\Http\Controllers\Api\ProductApiController;
 use App\Http\Controllers\Api\AttributeController;
+use App\Http\Controllers\Api\CartApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,8 @@ Route::get('select-district',[AddressController::class, 'districtData'])->name('
 Route::get('shipping-fee',[AddressController::class, 'shipData'])->name('shipData');
 Route::get('address',[AddressController::class, 'addressData'])->name('addressData');
 Route::get('code',[ProductApiController::class, 'codeData'])->name('codeData');
+Route::put('cap-nhat-qty-cart',[CartApiController::class, 'updateQtyCart'])->name('updateQtyCart');
+
 Route::put('bienthe/cap-nhat-gia',[ProductApiController::class, 'updatePriceVariant'])->name('updatePriceVariant');
 Route::put('bienthe/cap-nhat-gia_uu-dai',[ProductApiController::class, 'updatePriceDiscountVariant'])->name('updatePriceDiscountVariant');
 Route::post('bienthe/cap-nhat-avatar',[ProductApiController::class, 'updateAvtVariant'])->name('updateAvtVariant');

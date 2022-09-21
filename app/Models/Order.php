@@ -72,7 +72,7 @@ class Order extends Model
     {
         $orders = Order::join('order_details', 'order_details.order_id', 'orders.id')
             ->join('products', 'products.id', 'order_details.product_id')
-            ->select('products.avatar as proAvatar', 'products.name as proName', 'products.price as proPrice', 'order_details.quantity as quantity', 'orders.id as orderId')
+            ->select('products.image as proAvatar', 'products.name as proName', 'products.price as proPrice', 'order_details.quantity as quantity', 'orders.id as orderId')
             ->where('order_id', '=', $id)
             ->get();
         return $orders;

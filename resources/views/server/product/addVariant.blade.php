@@ -88,10 +88,10 @@
                     @foreach($data_opt_product as $item)
                     <tr>
                         <td>{{$item->id}}</td>
-                        <td>
+                        <td width="100px">
                             @foreach($data_att_opt as $opt)
                                 @if(in_array($opt->id, explode(' ',$item->option_id)))
-                                {{$opt->label}} /
+                                {{$opt->label}} <br>
                                 @endif
                             @endforeach
                         </td>

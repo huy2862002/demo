@@ -1,25 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\PaymentMethod;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 
-class OrderController extends Controller
+class VnpayController extends Controller
 {
     //
-    public function detail(Order $order)
-    {
-        $new_detail = new OrderDetail();
-        $order_detail = $new_detail->order_detail($order->id);
-        return view('client.order.detail', [
-            'order_detail' => $order_detail,
-            'order' => $order
-        ]);
+    public function pay(){
+        return view('a');
     }
-
     public function cancelOrder(Order $order)
     {
         $order->status = 4;
@@ -27,52 +19,15 @@ class OrderController extends Controller
         return redirect()->back();
     }
 
-    public function execPostRequest($url, $data)
-    {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt(
-            $ch,
-            CURLOPT_HTTPHEADER,
-            array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($data)
-            )
-        );
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        //execute post
-        $result = curl_exec($ch);
-        //close connection
-        curl_close($ch);
-        return $result;
-    }
-
-    public function handle($id, Request $request)
-    {
-        $new_order = new Order();
-        $order = Order::find($id);
-        $discount = 0;
-        if ($request->code) {
-            $discount_ex = $new_order->discount_code($request->code);
-            if($discount_ex){
-                $discount = $discount_ex->discount;
-                $discount_ex->quantity --;
-                $discount_ex->save();
-            }
-        }
-        $order->discount = $discount;
-        $order->save();
+    public function handle(){
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = route('success');
+        $vnp_Returnurl = 'http://127.0.0.1:8000/check-out';
         $vnp_TmnCode = "39IE9XM1";//Mã website tại VNPAY
         $vnp_HashSecret = "SNCTAOSZZEBRPFURIPQPUPVBAIGLVJUY"; //Chuỗi bí mật
-        $vnp_TxnRef = $id; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
-        $vnp_OrderInfo = $order->user_name . 'Thanh Toán Qua VN Pay';
+        $vnp_TxnRef = '12345'; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+        $vnp_OrderInfo ='Thanh Toán Qua VN Pay';
         $vnp_OrderType = 'billpayment';
-        $vnp_Amount = ($order->total_money - $order->total_money  * $discount / 100 )* 100;
+        $vnp_Amount = 10000* 100;
         $vnp_Locale = 'vn';
         $vnp_BankCode = 'NCB';
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
@@ -110,6 +65,7 @@ class OrderController extends Controller
             }
             $query .= urlencode($key) . "=" . urlencode($value) . '&';
         }
+
         $vnp_Url = $vnp_Url . "?" . $query;
         if (isset($vnp_HashSecret)) {
             $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);//
@@ -124,17 +80,5 @@ class OrderController extends Controller
         } else {
             echo json_encode($returnData);
         }
-    }
-
-    public function success()
-    {
-        $id = $_GET['vnp_TxnRef'];
-        $order = Order::find($id);
-        if ($_GET['vnp_ResponseCode'] == '00') {
-            $order->status = 1;
-            $order->updated_at = strtotime(date('Y-m-d H:i:s'));
-            $order->save();
-        }
-        return view('client.order.resultPayment');
     }
 }

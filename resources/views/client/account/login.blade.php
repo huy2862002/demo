@@ -5,105 +5,77 @@
     <title>Đăng Nhập</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="{{asset('client/images/icons/favicon.ico')}}" />
-    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="{{asset('client/images/icons/favicon.ico')}}"/>
     <link rel="stylesheet" type="text/css" href="{{asset('client/vendor/bootstrap/css/bootstrap.min.css')}}">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{{asset('client/fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{asset('client/fonts/iconic/css/material-design-iconic-font.min.css')}}">
-    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+          href="{{asset('client/fonts/iconic/css/material-design-iconic-font.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('client/vendor/animate/animate.css')}}">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{{asset('client/vendor/css-hamburgers/hamburgers.min.css')}}">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{{asset('client/vendor/animsition/css/animsition.min.css')}}">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{{asset('client/vendor/select2/select2.min.css')}}">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{{asset('client/vendor/daterangepicker/daterangepicker.css')}}">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{{asset('client/css/util.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('client/css/main.css')}}">
-    <!--===============================================================================================-->
 </head>
-
 <body>
-
-    <div class="limiter">
-        <div class="container-login100">
-            <div class="wrap-login100">
-                <form class="login100-form validate-form" method="post" action="{{route('postLogin')}}">
-                    @csrf
-                    <a href="{{route('home')}}"> <span class="login100-form-title p-b-26">
-                            QWERTY
-                        </span></a>
-                    @if(session()->has('error'))
-                    <span class="txt1" style="color:red">
-                        {{session()->get('error')}}
-                    </span>
-                    @endif
-                    @if(session()->has('success'))
-                    <span class="txt1" style="color:green">
-                        {{session()->get('success')}}
-                    </span>
-                    @endif
-                    <div class="wrap-input100 validate-input" data-validate="Valid email is: address@gmail.com">
-                        <input class="input100" type="text" name="email" value="{{Cookie::get('email') ? Cookie::get('email') : ''}}">
-                        <span class="focus-input100" @if(!Cookie::get('password')) data-placeholder="Email" @endif></span>
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <form class="login100-form validate-form" method="post" action="{{route('postLogin')}}">
+                @csrf
+                <a href="{{route('home')}}"> <span class="login100-form-title p-b-26">QWERTY</span></a>
+                @if(session()->has('success'))
+                    <div style="background-color: #25c425; padding: 12px">
+                        <span class="txt1" style="color:white">
+                        {{session()->get('success')}}</span></div>
+                @endif
+                @if(session()->has('error'))
+                    <div style="background-color: orangered; padding: 12px">
+                        <span class="txt1" style="color:white">
+                        {{session()->get('error')}}</span></div>
+                @endif
+                <div class="wrap-input100 validate-input" data-validate="Valid email is: address@gmail.com">
+                    <input class="input100" type="text" name="email"
+                           value="{{Cookie::get('email') ? Cookie::get('email') : ''}}">
+                    <span class="focus-input100" @if(!Cookie::get('password')) data-placeholder="Email" @endif></span>
+                </div>
+                <div class="wrap-input100 validate-input" data-validate="Enter password">
+                    <span class="btn-show-pass"><i class="zmdi zmdi-eye"></i></span>
+                    <input class="input100" type="password" name="password"
+                           value="{{Cookie::get('password') ? Cookie::get('password') : ''}}">
+                    <span class="focus-input100"
+                          @if(!Cookie::get('password')) data-placeholder="Password" @endif></span></div>
+                <input type="checkbox" checked name="checkbox"> <span style="color: #999999;">Remember</span>
+                <div class="container-login100-form-btn">
+                    <div class="wrap-login100-form-btn">
+                        <div class="login100-form-bgbtn"></div>
+                        <button class="login100-form-btn">
+                            Login
+                        </button>
                     </div>
-                    <div class="wrap-input100 validate-input" data-validate="Enter password">
-                        <span class="btn-show-pass">
-                            <i class="zmdi zmdi-eye"></i>
-                        </span>
-                        <input class="input100" type="password" name="password" value="{{Cookie::get('password') ? Cookie::get('password') : ''}}">
-                        <span class="focus-input100" @if(!Cookie::get('password')) data-placeholder="Password" @endif></span>
-                    </div>
-                    <input type="checkbox" checked name="checkbox"> <span style="color: #999999;">Remember</span>
-                    <div class="container-login100-form-btn">
-                        <div class="wrap-login100-form-btn">
-                            <div class="login100-form-bgbtn"></div>
-                            <button class="login100-form-btn">
-                                Đăng Nhập
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="text-center p-t-115">
+                </div>
+                <div class="text-center p-t-115">
                         <span class="txt1">
-                            Bạn chưa có tài khoản ?
+                            Do not have an account ?
                         </span>
-
-                        <a class="txt2" href="{{route('registerForm')}}">
-                            Đăng Ký
-                        </a>
-                    </div>
-                </form>
-            </div>
+                    <a class="txt2" href="{{route('registerForm')}}">
+                        Sign up
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
-
-
-    <div id="dropDownSelect1"></div>
-
-    <!--===============================================================================================-->
-    <script src="{{asset('client/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
-    <!--===============================================================================================-->
-    <script src="{{asset('client/vendor/animsition/js/animsition.min.js')}}"></script>
-    <!--===============================================================================================-->
-    <script src="{{asset('client/vendor/bootstrap/js/popper.js')}}"></script>
-    <script src="{{asset('client/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
-    <!--===============================================================================================-->
-    <script src="{{asset('client/vendor/select2/select2.min.js')}}"></script>
-    <!--===============================================================================================-->
-    <script src="{{asset('client/vendor/daterangepicker/moment.min.js')}}"></script>
-    <script src="{{asset('client/vendor/daterangepicker/daterangepicker.js')}}"></script>
-    <!--===============================================================================================-->
-    <script src="{{asset('client/vendor/countdowntime/countdowntime.js')}}"></script>
-    <!--===============================================================================================-->
-    <script src="{{asset('client/js/main.js')}}"></script>
-
+</div>
+<div id="dropDownSelect1"></div>
+<script src="{{asset('client/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+<script src="{{asset('client/vendor/animsition/js/animsition.min.js')}}"></script>
+<script src="{{asset('client/vendor/bootstrap/js/popper.js')}}"></script>
+<script src="{{asset('client/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+<script src="{{asset('client/vendor/select2/select2.min.js')}}"></script>
+<script src="{{asset('client/vendor/daterangepicker/moment.min.js')}}"></script>
+<script src="{{asset('client/vendor/daterangepicker/daterangepicker.js')}}"></script>
+<script src="{{asset('client/vendor/countdowntime/countdowntime.js')}}"></script>
+<script src="{{asset('client/js/main.js')}}"></script>
 </body>
-
 </html>

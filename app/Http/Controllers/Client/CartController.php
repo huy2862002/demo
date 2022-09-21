@@ -9,9 +9,12 @@ use App\Models\AttributeOption;
 use App\Models\AttributeProduct;
 use App\Models\AttributeProductOption;
 use App\Models\Cart;
+use App\Models\District;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
+use App\Models\Province;
+use App\Models\Region;
 use App\Models\Ship;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +22,6 @@ use Illuminate\Support\Facades\Cookie;
 
 class CartController extends Controller
 {
-    //
     public function addToCart(Product $product, Request $request)
     {
         $new_att_product = new AttributeProduct();
@@ -48,45 +50,39 @@ class CartController extends Controller
 
     public function showCart()
     {
-        $new_cart = new Cart();
+        $new_region = new Region();
+        $new_province = new  Province();
+        $new_district = new District();
         $new_address = new Address();
+
+        $regions = $new_region->get_all();
+        $provinces = $new_province->get_all();
+        $districts = $new_district->get_all();
+
+        if(Ath::check()){
+            $full_name = Auth::user()->name;
+            $phone_number = Auth::user()->phone_number;
+        }else{
+            $full_name = '';
+            $phone_number = '';
+        }
+        $new_cart = new Cart();
+
         $new_att_opt = new AttributeOption();
+
         $att_opt = $new_att_opt->get_all();
         $new_ship = new Ship();
-        if (Auth::check()) {
-            $address = $new_address->get_address(Auth::user()->id);
-            if ($address) {
-                $shipFee = $new_ship->ship_fee($address->district_id)->weight * 20000;
-                if ($address->region_id == 1) {
-                    $regionName = 'Miền Bắc';
-                } else if ($address->region_id == 2) {
-                    $regionName = 'Miền Trung';
-                } else if ($address->region_id == 3) {
-                    $regionName = 'Miền Nam';
-                } else {
-                    $regionName = '';
-                }
-            } else {
-                $address = [];
-                $shipFee = '---';
-                $regionName = '';
-            }
-        } else {
-            $address = [];
-            $shipFee = '---';
-            $regionName = '';
-        }
-        $provinces = $new_address->get_province();
-        $districts = $new_address->get_district();
+
+
         $total = $new_cart->get_total(session()->get('cart'));
         return view('client.cart.show', [
-            'total' => $total,
-            'att_opt'=>$att_opt,
-            'address' => $address,
+            'regions' => $regions,
             'provinces' => $provinces,
             'districts' => $districts,
-            'ship' => $shipFee,
-            'regionName' => $regionName
+
+            'total' => $total,
+            'att_opt'=>$att_opt,
+
         ]);
     }
 
@@ -97,7 +93,7 @@ class CartController extends Controller
         if (!session()->get('cart')) {
             return redirect()->route('home');
         }
-        foreach (session()->get('cart') as $item) {
+        foreach ($oldCart as $item) {
             if ($item['id'] != $id) {
                 $cart = $item;
                 $new_cart[$item['id']] = $cart;
@@ -133,7 +129,7 @@ class CartController extends Controller
         }
 
         $total = $new_cart->get_total(session()->get('cart'));
-        $ship = $new_ship->ship_fee($district_id)->weight * 20000;
+        $ship = 20000;
         $total_money = $total + $ship;
         $id = $new_order->add_new($request->user_name, $request->phone_number, $request->email, $region_id, $province_id, $district_id, $address, $total_money);
 
@@ -152,7 +148,7 @@ class CartController extends Controller
         $order = Order::find($id);
         $new_ship = new Ship();
         $address = $new_order->get_order_with_id($id);
-        $ship = $new_ship->ship_fee($order->district_id)->weight * 20000;
+        $ship = 20000000;
         $detail = $new_order->get_detail_by_order_id($id);
         return view('client.order.payment', [
             'detail' => $detail,

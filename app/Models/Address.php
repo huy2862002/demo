@@ -36,21 +36,6 @@ class Address extends Model
             ->first();
         return $address;
     }
-    // Lấy ra province
-    public function get_province()
-    {
-        $province = Province::select('province.*')
-        ->get();
-        return $province;
-    }
-    // Lấy ra District
-    public function get_district()
-    {
-        $district = District::select('district.*')
-        ->get();
-        return $district;
-    }
-    // Update địa chỉ user
     public function update_address($address_update, $region_id, $province_id, $district_id, $address){
         $address_update->region_id = $region_id;
         $address_update->province_id = $province_id;
