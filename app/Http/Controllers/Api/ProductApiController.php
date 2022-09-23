@@ -39,7 +39,6 @@ class ProductApiController extends Controller
         $discount = 0;
         if ($code) {
             $discount = $code->discount;
-
         }
         return response()->json([
             'data' => $discount,

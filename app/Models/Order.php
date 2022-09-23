@@ -27,16 +27,16 @@ class Order extends Model
     ];
 
     // Thêm đon hàng
-    public function add_new($user_name, $phone_number, $email, $region_id, $province_id, $district_id, $address, $total)
+    public function add_new($user_name, $phone_number, $email, $address, $total)
     {
         $new = new Order();
         $new->user_name = $user_name;
         $new->phone_number = $phone_number;
         $new->email = $email;
-        $new->region_id = $region_id;
-        $new->province_id = $province_id;
-        $new->district_id = $district_id;
-        $new->address = $address;
+        $new->region_id = $address['region_id'];
+        $new->province_id = $address['province_id'];
+        $new->district_id = $address['district_id'];
+        $new->address = $address['address'];
         $new->status = 0;
         $new->total_money = $total;
         $new->created_at = strtotime(date('Y-m-d H:i:s'));
@@ -49,6 +49,7 @@ class Order extends Model
     public function success_payment($id)
     {
         $order = Order::find($id);
+        dd($order);
         $order->status = 1;
         $order->save();
     }
@@ -68,58 +69,17 @@ class Order extends Model
         return $count;
     }
 
-    public function get_detail_by_order_id($id)
+
+    public function get_with_gmail($gmail)
     {
-        $orders = Order::join('order_details', 'order_details.order_id', 'orders.id')
-            ->join('products', 'products.id', 'order_details.product_id')
-            ->select('products.image as proAvatar', 'products.name as proName', 'products.price as proPrice', 'order_details.quantity as quantity', 'orders.id as orderId')
-            ->where('order_id', '=', $id)
+        $orders = Order::join('district', 'district.id', 'orders.district_id')
+            ->join('province', 'province.id', 'orders.province_id')
+            ->select('orders.*', 'province.name as provinceName', 'district.name as disName')
+            ->where('email', '=', $gmail)
             ->get();
         return $orders;
     }
 
-    public function get_order_by_gmail_delivering($gmail)
-    {
-        $orders = Order::join('district', 'district.id', 'orders.district_id')
-            ->join('province', 'province.id', 'orders.province_id')
-            ->select('orders.*', 'province.name as provinceName', 'district.name as disName')
-            ->where('email', '=', $gmail)
-            ->where('status', '=', 2)
-            ->get();
-        return $orders;
-    }
-
-    public function  get_order_by_gmail_processing($gmail)
-    {
-        $orders = Order::join('district', 'district.id', 'orders.district_id')
-            ->join('province', 'province.id', 'orders.province_id')
-            ->select('orders.*', 'province.name as provinceName', 'district.name as disName')
-            ->where('email', '=', $gmail)
-            ->where('status', '=', 1)
-            ->get();
-        return $orders;
-    }
-    public function  get_order_by_gmail_payment($gmail)
-    {
-        $orders = Order::join('district', 'district.id', 'orders.district_id')
-            ->join('province', 'province.id', 'orders.province_id')
-            ->select('orders.*', 'province.name as provinceName', 'district.name as disName')
-            ->where('email', '=', $gmail)
-            ->where('status', '=', 0)
-            ->get();
-        return $orders;
-    }
-    // Lấy những đơn hàng đã hủy
-    public function  get_order_by_gmail_cancel($gmail)
-    {
-        $orders = Order::join('district', 'district.id', 'orders.district_id')
-            ->join('province', 'province.id', 'orders.province_id')
-            ->select('orders.*', 'province.name as provinceName', 'district.name as disName')
-            ->where('email', '=', $gmail)
-            ->where('status', '=', 4)
-            ->get();
-        return $orders;
-    }
 
     public function check($id)
     {
@@ -130,11 +90,11 @@ class Order extends Model
         return $order;
     }
 
-    public function  get_order_with_id($id)
+    public function  get_with_id($id)
     {
         $orders = Order::join('district', 'district.id', 'orders.district_id')
             ->join('province', 'province.id', 'orders.province_id')
-            ->select('orders.*', 'province.name as provinceName', 'district.name as disName')
+            ->select('orders.*', 'province.name as provinceName', 'district.name as disName', 'district.type as districtType', 'province.type as provinceType')
             ->where('orders.id', '=', $id)
             ->first();
         return $orders;

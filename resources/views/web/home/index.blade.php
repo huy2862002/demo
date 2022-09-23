@@ -5,7 +5,7 @@
         <div class="block-18 text-center">
             <div class="text">
                 <strong class="number" data-number="{{isset($count_product) ? $count_product : 0}}">0</strong>
-                <span>Tổng Sản Phẩm</span>
+                <span>Product</span>
             </div>
         </div>
     </div>
@@ -13,7 +13,7 @@
         <div class="block-18 text-center">
             <div class="text">
                 <strong class="number" data-number="20">0</strong>
-                <span>Tổng Đánh Giá</span>
+                <span>Evaluate</span>
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
         <div class="block-18 text-center">
             <div class="text">
                 <strong class="number" data-number="{{isset($count_user) ? $count_user : 0}}">0</strong>
-                <span>Số Tài Khoản</span>
+                <span>Account</span>
             </div>
         </div>
     </div>
@@ -166,12 +166,10 @@
                                     </p>
                                 </div>
                             </div>
-
                                 <p class="bottom-area d-flex px-3">
                                     <button class="add-to-cart text-center py-2 mr-1"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></button>
                                     <button href="#" class="buy-now text-center py-2">Buy now<span><i class="ion-ios-cart ml-1"></i></span></button>
                                 </p>
-
                         </div>
                     </div>
                 </form>

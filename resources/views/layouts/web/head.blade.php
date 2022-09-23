@@ -19,6 +19,7 @@
 
     <link rel="stylesheet" href="{{asset('web/css/ionicons.min.css')}}">
 
+
     <link rel="stylesheet" href="{{asset('web/css/bootstrap-datepicker.css')}}">
     <link rel="stylesheet" href="{{asset('web/css/jquery.timepicker.css')}}">
 
@@ -26,6 +27,4 @@
     <link rel="stylesheet" href="{{asset('web/css/flaticon.css')}}">
     <link rel="stylesheet" href="{{asset('web/css/icomoon.css')}}">
     <link rel="stylesheet" href="{{asset('web/css/style.css')}}">
-
-
   </head>

@@ -32,9 +32,9 @@ class AddressController extends Controller
     public function shipData(Request $request)
     {
         $new_ship = new Ship();
-        $ship = $new_ship->ship_fee($request->data);
+        $ship_fee = $new_ship->ship_fee($request->data);
         return response()->json([
-            'data' => $ship,
+            'data' => $ship_fee,
             'status' => 200
         ]);
     }

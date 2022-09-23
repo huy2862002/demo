@@ -5,6 +5,7 @@ namespace App\Http\Controllers\PaymentMethod;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class VnpayController extends Controller
 {
@@ -19,15 +20,16 @@ class VnpayController extends Controller
         return redirect()->back();
     }
 
-    public function handle(){
+    public function handle(Order $order){
+        $order_id = $order->id;
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = 'http://127.0.0.1:8000/check-out';
+        $vnp_Returnurl = 'http://127.0.0.1:8000/payment-results';
         $vnp_TmnCode = "39IE9XM1";//Mã website tại VNPAY
         $vnp_HashSecret = "SNCTAOSZZEBRPFURIPQPUPVBAIGLVJUY"; //Chuỗi bí mật
-        $vnp_TxnRef = '12345'; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+        $vnp_TxnRef = time(); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
         $vnp_OrderInfo ='Thanh Toán Qua VN Pay';
         $vnp_OrderType = 'billpayment';
-        $vnp_Amount = 10000* 100;
+        $vnp_Amount = $order->total_money * 100;
         $vnp_Locale = 'vn';
         $vnp_BankCode = 'NCB';
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
@@ -80,5 +82,14 @@ class VnpayController extends Controller
         } else {
             echo json_encode($returnData);
         }
+    }
+
+    public function payment_results(){
+        $new_order = new Order();
+        $order_id  = $_GET['vnp_TxnRef'];
+        if($_GET['vnp_ResponseCode'] == '00'){
+            $new_order->success_payment($order_id);
+        }
+        return view('client.order.resultPayment');
     }
 }

@@ -10,9 +10,11 @@ use App\Http\Controllers\Server\OrderController;
 use App\Http\Controllers\Server\AttributeController;
 use App\Http\Controllers\Server\ProductController;
 use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Server\ShipController;
 use App\Http\Controllers\Web\OrderController as WebOrderController;
 use App\Http\Controllers\Web\ProductController as WebProductController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -38,16 +40,16 @@ Route::middleware('guest')->post('dang-ky', [AccountController::class, 'postRegi
 Route::post('add-to-cart/{product}', [CartController::class, 'addToCart'])->name('addToCart');
 Route::get('gio-hang', [CartController::class, 'showCart'])->name('showCart');
 Route::delete('xoa-gio-hang/{id}', [CartController::class, 'delCart'])->name('delCart');
-Route::post('check-out', [CartController::class, 'checkout'])->name('checkout');
-Route::get('thanh-toan/{id}', [CartController::class, 'payment'])->name('payment');
-Route::post('xư-ly-thanh-toan/{id}', [\App\Http\Controllers\PaymentMethod\VnpayController::class, 'handle'])->name('handle');
-Route::get('don-hang', [CartController::class, 'order'])->name('order');
+Route::post('check-out', [\App\Http\Controllers\Client\OrderController::class, 'checkout'])->name('checkout');
+Route::get('thanh-toan/{order}', [\App\Http\Controllers\Client\OrderController::class, 'payment'])->name('payment');
+Route::post('xư-ly-thanh-toan/{order}', [\App\Http\Controllers\PaymentMethod\VnpayController::class, 'handle'])->name('handle');
+Route::get('payment-results', [\App\Http\Controllers\PaymentMethod\VnpayController::class, 'payment_results'])->name('payment_results');
+Route::get('don-hang', [\App\Http\Controllers\Client\OrderController::class, 'list'])->name('order');
 Route::get('chi-tiet-don-hang/{order}', [CartController::class, 'detail'])->name('orderDetail');
 Route::get('huy-don-hang/{order}', [CartController::class, 'cancelOrder'])->name('cancel');
-
 Route::prefix('san-pham')->name('product.')->group(function () {
-    Route::get('', [WebProductController::class, 'list'])->name('list');
-    Route::get('chi-tiet/{product}', [WebProductController::class, 'detail'])->name('detail');
+    Route::get('', [\App\Http\Controllers\Web\ProductController::class, 'list'])->name('list');
+    Route::get('chi-tiet/{product}', [\App\Http\Controllers\Web\ProductController::class, 'detail'])->name('detail');
 });
 
 Route::prefix('quan-tri')->name('server.')->group(function () {
@@ -95,9 +97,9 @@ Route::prefix('quan-tri')->name('server.')->group(function () {
     });
 
     Route::prefix('shipping-fee')->name('ship.')->group(function () {
-        Route::get('', [OrderController::class, 'ship_list'])->name('list');
-        Route::get('them-moi', [OrderController::class, 'add_ship'])->name('addForm');
-        Route::post('import', [OrderController::class, 'import_ship'])->name('import');
+        Route::get('', [ShipController::class, 'list'])->name('list');
+        Route::get('them-moi', [ShipController::class, 'addForm'])->name('addForm');
+        Route::post('import', [ShipController::class, 'import'])->name('import');
     });
 
     Route::prefix('code')->name('code.')->group(function () {

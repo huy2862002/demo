@@ -39,50 +39,53 @@ class CartController extends Controller
         }
         if (count($option_id) > 0) {
             $variant = $new_opt_product->get_where_opt($product->id, implode(' ', $option_id));
-
-        }else{
+        } else {
             $variant = $product;
         }
 
-        $new_cart->addCart($variant, $request->quantity);
-        return redirect()->route('showCart')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng');
+        if($request->quantity){
+            $qty = $request->quantity;
+        }else{
+            $qty =1;
+        }
+        $new_cart->addCart($variant, $qty);
+        return redirect()->route('showCart')->with('success', 'The product has been added to cart !');
     }
 
     public function showCart()
     {
         $new_region = new Region();
-        $new_province = new  Province();
-        $new_district = new District();
         $new_address = new Address();
-
+        $new_ship = new Ship();
         $regions = $new_region->get_all();
-        $provinces = $new_province->get_all();
-        $districts = $new_district->get_all();
 
-        if(Ath::check()){
-            $full_name = Auth::user()->name;
-            $phone_number = Auth::user()->phone_number;
-        }else{
-            $full_name = '';
-            $phone_number = '';
+        if (Auth::check()) {
+            $user = Auth::user();
+            $address_user = $new_address->get_address_with_user($user->id);
+            if($address_user){
+                $address = $address_user;
+                $ship_fee = $new_ship->ship_fee($address_user->district_id)->ship_fee;
+            }else{
+                $address = '';
+                $ship_fee = '';
+            }
+
+        } else {
+            $user = [];
+            $address = session()->get('address') ? session()->get('address') : '';
+            $ship_fee = session()->get('address') ? $new_ship->ship_fee(session()->get('address')->district_id)->ship_fee : '';
         }
         $new_cart = new Cart();
-
         $new_att_opt = new AttributeOption();
-
         $att_opt = $new_att_opt->get_all();
-        $new_ship = new Ship();
-
-
         $total = $new_cart->get_total(session()->get('cart'));
         return view('client.cart.show', [
             'regions' => $regions,
-            'provinces' => $provinces,
-            'districts' => $districts,
-
+            'user' => $user,
+            'address' => $address,
+            'ship_fee' => $ship_fee,
             'total' => $total,
-            'att_opt'=>$att_opt,
-
+            'att_opt' => $att_opt,
         ]);
     }
 
@@ -103,80 +106,4 @@ class CartController extends Controller
         session()->put('cart', $new_cart);
         return redirect()->back();
     }
-
-    public function checkout(Request $request)
-    {
-        $new_address = new Address();
-        $new_order = new Order();
-        $new_cart = new Cart();
-        $new_ship = new Ship();
-        $new_detail = new OrderDetail();
-        if ($request->address_id) {
-            $old_address = $new_address->get_address_with_id($request->address_id);
-            $region_id = $old_address->region_id;
-            $province_id = $old_address->province_id;
-            $district_id = $old_address->district_id;
-            $address = $old_address->address;
-        } else {
-            $region_id = $request->region_id;
-            $province_id = $request->province_id;
-            $district_id = $request->district_id;
-            $address = $request->address;
-            if (Auth::check()) {
-                $user_id = Auth::user()->id;
-                $new_address->add_new($user_id, $region_id, $province_id, $district_id, $address);
-            }
-        }
-
-        $total = $new_cart->get_total(session()->get('cart'));
-        $ship = 20000;
-        $total_money = $total + $ship;
-        $id = $new_order->add_new($request->user_name, $request->phone_number, $request->email, $region_id, $province_id, $district_id, $address, $total_money);
-
-        foreach (session('cart') as $item) {
-            $new_detail->add_new($id, $item['id'], $item['quantity']);
-        }
-
-        Cookie::queue('total', $total_money, 20);
-
-        return redirect()->route('payment', $id);
-    }
-
-    public function payment($id)
-    {
-        $new_order = new Order();
-        $order = Order::find($id);
-        $new_ship = new Ship();
-        $address = $new_order->get_order_with_id($id);
-        $ship = 20000000;
-        $detail = $new_order->get_detail_by_order_id($id);
-        return view('client.order.payment', [
-            'detail' => $detail,
-            'ship' => $ship,
-            'address' => $address,
-            'order' => $order
-        ]);
-    }
-
-    public function order()
-    {
-        if (Auth::check()) {
-            $gmail = Auth::user()->email;
-        } else {
-            $gmail = '';
-        }
-        $new_order = new Order();
-        $delivering = $new_order->get_order_by_gmail_delivering($gmail);
-        $processing = $new_order->get_order_by_gmail_processing($gmail);
-        $payment = $new_order->get_order_by_gmail_payment($gmail);
-        $cancel = $new_order->get_order_by_gmail_cancel($gmail);
-        return view('client.order.list', [
-            'delivering' => $delivering,
-            'processing' => $processing,
-            'payment' => $payment,
-            'cancel' => $cancel
-        ]);
-    }
-
-
 }

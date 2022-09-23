@@ -66,65 +66,75 @@
                         @endif
                         <span>{{$product->short_description}}</span>
                         @if($default)
-                        @if(count($chose_option) >0)
-                            <div>
-                                @foreach($chose_option as $item)
-                                    <div class="">
-                                        <b>{{$item->name}}</b><br>
-                                        <div
-                                            style="display: grid;grid-template-columns: 1fr 1fr 1fr 1fr; grid-gap: 2px; text-align: left; margin-bottom: 20px">
-                                            @foreach($opt as $o)
-                                                @if($o->attribute_id == $item->id)
-                                                    @if(in_array($o->id, explode(' ', $default->option_id)))
-                                                        <div class="dfa" id="att{{$o->id}}"
-                                                             style="text-align:center;border: 1px solid orangered; background-color: yellow">
-                                                            <div>
-                                                                <input style="visibility: hidden" id="rad{{$o->id}}" name="{{$item->name}}" type="radio" checked
-                                                                       value="{{$o->id}}">
-                                                                @else
-                                                                    <div class="dfa" id="att{{$o->id}}"
-                                                                         style="text-align:center;border: 1px solid #cccccc">
-                                                                        <div>
-                                                                            <input style="visibility: hidden" id="rad{{$o->id}}" name="{{$item->name}}" type="radio"
-                                                                                   value="{{$o->id}}">
-                                                                            @endif
-                                                                            @if($item->visual == 'text')
-                                                                                <span style="cursor: pointer" class="option" id="{{$o->id}}">{{$o->label}}</span>
-                                                                            @endif
+                            @if(count($chose_option) >0)
+                                <div>
+                                    @foreach($chose_option as $item)
+                                        <div class="">
+                                            <b>{{$item->name}}</b><br>
+                                            <div
+                                                style="display: grid;grid-template-columns: 1fr 1fr 1fr 1fr; grid-gap: 2px; text-align: left; margin-bottom: 20px">
+                                                @foreach($opt as $o)
+                                                    @if($o->attribute_id == $item->id)
+                                                        @if(in_array($o->id, explode(' ', $default->option_id)))
+                                                            <div class="dfa" id="att{{$o->id}}"
+                                                                 style="text-align:center;border: 1px solid #a61ac8; background-color: #a61ac8; color: white">
+                                                                <div>
+                                                                    <input style="visibility: hidden" id="rad{{$o->id}}"
+                                                                           name="{{$item->name}}" type="radio" checked
+                                                                           value="{{$o->id}}">
+                                                                    @else
+                                                                        <div class="dfa" id="att{{$o->id}}"
+                                                                             style="text-align:center;border: 1px solid #cccccc">
+                                                                            <div>
+                                                                                <input style="visibility: hidden"
+                                                                                       id="rad{{$o->id}}"
+                                                                                       name="{{$item->name}}"
+                                                                                       type="radio"
+                                                                                       value="{{$o->id}}">
+                                                                                @endif
+                                                                                @if($item->visual == 'text')
+                                                                                    <span style="cursor: pointer"
+                                                                                          class="option"
+                                                                                          id="{{$o->id}}">{{$o->label}}</span>
+                                                                                @endif
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                @endif
-                                                                @endforeach
+                                                                    @endif
+                                                                    @endforeach
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        @endforeach
-                                        </div>
-                                        @endif
-                                        @endif
-                                        <div class="row mt-4">
-                                            <div class="w-100"></div>
-                                            <div class="input-group col-md-6 d-flex mb-3">
+                                                            @endforeach
+                                            </div>
+                                            @endif
+                                            @endif
+                                            <div class="row mt-4">
+                                                <div class="w-100"></div>
+                                                <div class="input-group col-md-6 d-flex mb-3">
                             <span class="input-group-btn mr-2">
                                 <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
                                     <i class="ion-ios-remove"></i>
                                 </button>
                             </span>
-                                                <input type="text" id="quantity" name="quantity"
-                                                       class="form-control input-number"
-                                                       value="1" min="1" max="100">
-                                                <span class="input-group-btn ml-2">
+                                                    <input type="text" id="quantity" name="quantity"
+                                                           class="form-control input-number"
+                                                           value="1" min="1" max="100">
+                                                    <span class="input-group-btn ml-2">
                                 <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
                                     <i class="ion-ios-add"></i>
                                 </button>
                             </span>
+                                                </div>
+                                                <div class="w-100"></div>
                                             </div>
-                                            <div class="w-100"></div>
+                                            <div id="btn-cart">
+                                                <div style="background-color: deepskyblue">
+                                                    <button style="width: 100%; cursor: pointer; color: white">ADD TO
+                                                        CART
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div id="btn-cart">
-                                            <button style="width: 100%; cursor: pointer">ADD TO CART</button>
-                                        </div>
-                                    </div>
-                            </div>
+                                </div>
                     </div>
                 </div>
             </form>
@@ -146,7 +156,27 @@
 
                         <div>
                             <h4 class="mb-3">Cấu Hình</h4>
-                            <p>{{$product->product_description}}</p>
+                            <table class="table table-striped">
+                                <thead>
+
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Màn hình :</td>
+                                    <td>OLED6.7"Super Retina XDR</td>
+                                    <td>Hệ điều hành :</td>
+                                    <td>iOS 15</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <span>Camera sau: 3 camera 12 MP</span><br>
+                            <span>Camera trước: 12 MP</span><br>
+                            <span>Chip: Apple A15 Bionic</span><br>
+                            <span>RAM: 6 GB</span><br>
+                            <span>Dung lượng lưu trữ: 128 GB</span><br>
+                            <span>SIM: 1 Nano SIM & 1 eSIM, Hỗ trợ 5G</span><br>
+                            <span>Pin, Sạc: 4352 mAh20 W</span><br>
                         </div>
                     </div>
 
@@ -265,11 +295,12 @@
 @section('script')
     <script>
         $(function () {
-            $('.option').on('click', function (){
+            $('.option').on('click', function () {
                 let id = $(this).attr('id');
                 $('.dfa').css('border', '1px solid #cccccc');
                 $('.dfa').css('background-color', 'white');
-                $('#rad'+id).click();
+                $('.dfa').css('color', '#cccccc');
+                $('#rad' + id).click();
             })
             $("input[type = 'radio']").on('change', function () {
                 var rdo = $("input[type = 'radio']");
@@ -279,8 +310,9 @@
                     if (rdo[i].checked === true) {
                         console.log(rdo[i].value);
                         value.push(rdo[i].value);
-                        $('#att'+rdo[i].value).css('border', '1px solid orangered');
-                        $('#att'+rdo[i].value).css('background-color', 'yellow');
+                        $('#att' + rdo[i].value).css('border', '1px solid #a61ac8');
+                        $('#att' + rdo[i].value).css('background-color', '#a61ac8');
+                        $('#att' + rdo[i].value).css('color', 'white');
                     }
                 }
                 let url = "{{route('getInfoVariant')}}";
@@ -296,15 +328,15 @@
                         let url = window.location.origin;
                         const format = new Intl.NumberFormat('en');
                         console.log(res)
-                        if(res.data.price_discount < res.data.price){
+                        if (res.data.price_discount < res.data.price) {
                             let price = `
                             <span style="text-decoration-line:line-through" class="price-sale">${format.format(res.data.price)} VNĐ</span>
-                        <span style="color: red">( -${Math.round((res.data.price - res.data.price_discount) / res.data.price * 100 )}% )</span>
+                        <span style="color: red">( -${Math.round((res.data.price - res.data.price_discount) / res.data.price * 100)}% )</span>
                         <p class="price"><span class="price-sale">${format.format(res.data.price_discount)} VNĐ</span>
                         </p>
                             `
                             $('#price').html(price);
-                        }else{
+                        } else {
                             let price = `
                              <p class="price"><span class="price-sale">${format.format(res.data.price)} VNĐ</span>
                         </p>
@@ -314,13 +346,18 @@
 
 
                         if (res.data.inventory <= 0) {
+                            $('#btn-cart').css('background-color: red');
                             let btn = `
-                           <button type="button" style="width: 100%; cursor: pointer">LIÊN HỆ</button>
+                           <div style="background-color: orange">
+                                                <button disabled style="width: 100%; cursor: pointer; color: white">CONTACT US</button>
+                                            </div>
                             `
                             $('#btn-cart').html(btn);
                         } else {
                             let btn = `
-                            <button style="width: 100%; cursor: pointer">ADD TO CART</button>
+                            <div style="background-color: deepskyblue">
+                                                <button style="width: 100%; cursor: pointer; color: white">ADD TO CART</button>
+                                            </div>
                             `
                             $('#btn-cart').html(btn);
                         }

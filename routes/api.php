@@ -28,7 +28,7 @@ Route::get('select-san-pham',[ProductApiController::class, 'selectData'])->name(
 Route::get('select-region',[AddressController::class, 'provinceData'])->name('provinceData');
 Route::get('select-district',[AddressController::class, 'districtData'])->name('districtData');
 Route::get('shipping-fee',[AddressController::class, 'shipData'])->name('shipData');
-Route::get('address',[AddressController::class, 'addressData'])->name('addressData');
+
 Route::get('code',[ProductApiController::class, 'codeData'])->name('codeData');
 Route::put('cap-nhat-qty-cart',[CartApiController::class, 'updateQtyCart'])->name('updateQtyCart');
 

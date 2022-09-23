@@ -25,12 +25,12 @@ class Ship extends Model
         return $feeShip;
     }
 
-    public function ship_list(){
-        $feeShip = Ship::join('province','province.id','ships.province_id')
+    public function list(){
+        $list = Ship::join('province','province.id','ships.province_id')
         ->join('district','district.id','ships.district_id')
         ->select('ships.*','ships.id as shipId', 'province.name as provinceName', 'district.name as districtName')
         ->paginate(20);
-        return $feeShip;
+        return $list;
     }
 
 
