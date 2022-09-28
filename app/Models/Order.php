@@ -38,6 +38,7 @@ class Order extends Model
         $new->district_id = $address['district_id'];
         $new->address = $address['address'];
         $new->status = 0;
+        $new->discount_id = 1;
         $new->total_money = $total;
         $new->created_at = strtotime(date('Y-m-d H:i:s'));
         $new->updated_at = strtotime(date('Y-m-d H:i:s'));
@@ -45,11 +46,9 @@ class Order extends Model
         return $new->id;
     }
 
-
     public function success_payment($id)
     {
         $order = Order::find($id);
-        dd($order);
         $order->status = 1;
         $order->save();
     }
@@ -61,6 +60,11 @@ class Order extends Model
             ->select('orders.*', 'district.name as districtName', 'province.name as provinceName')
             ->paginate(8);
         return $orders;
+    }
+
+    public function count_order(){
+        $count_order = Order::count();
+        return $count_order;
     }
 
     public function get_count_order_by_status($status)
@@ -76,6 +80,7 @@ class Order extends Model
             ->join('province', 'province.id', 'orders.province_id')
             ->select('orders.*', 'province.name as provinceName', 'district.name as disName')
             ->where('email', '=', $gmail)
+            ->orderBy('created_at', 'desc')
             ->get();
         return $orders;
     }
@@ -116,6 +121,14 @@ class Order extends Model
         $code = Code::select('discount_code.*')
             ->paginate(12);
         return $code;
+    }
+
+    public function first_id_latest(){
+        $latest_order = Order::select('orders.id')
+            ->orderBy('id', 'desc')
+            ->first();
+        $id = $latest_order->id;
+        return $id;
     }
 
 

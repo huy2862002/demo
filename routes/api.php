@@ -43,6 +43,9 @@ Route::post('them-gia-tri-thuoc-tinh',[AttributeController::class, 'addAttValue'
 Route::get('xoa-value-att', [AttributeController::class, 'delValueAtt'])->name('delValueAtt');
 Route::post('them-moi-option', [AttributeController::class, 'addOption'])->name('addOption');
 
+Route::post('loadRating',[ProductApiController::class, 'loadRating'])->name('loadRating');
+
+
 
 
 

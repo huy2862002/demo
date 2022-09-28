@@ -67,7 +67,7 @@
                         </div>
                     </div>
                 </div>
-                <form class="row justify-content-center" action="{{route('checkout')}}" method="post">
+                <form class="row justify-content-center" action="{{route('checkout')}}" id="checkout" method="post">
                     @csrf
                     <div class="container" style="display: grid; grid-template-columns: 2fr 1fr; grid-gap: 12px">
                         <div class="billing-form">
@@ -190,19 +190,34 @@
 
                         </div><!-- END -->
                         <div class="cart-detail cart-total bg-light p-3 p-md-4">
-                            <p class="d-flex total-price" id="ship">
-                                <span>Ship Fee</span>
-                                <span>{{$ship_fee != '' ? number_format($ship_fee,0,',',',') : '---'}} VNĐ</span>
+                            <p class="d-flex total-price">
+                                <span>ShipFee</span>
+                                <span
+                                    id="ship">{{$ship_fee != '' ? number_format($ship_fee,0,',',',') : '---'}} VNĐ</span>
                             </p>
                             <p class="d-flex total-price">
-                                <span>Total</span>
+                                <span>CartTotal</span>
                                 <span>{{number_format($total,0,',',',')}} VNĐ</span>
                             </p>
-                            <hr>
-                            <p class="d-flex total-price" id="total">
-                                <span>SubTotal</span>
-                                <span>{{$ship_fee != '' ? number_format($ship_fee + $total,0,',',',') : '---'}} VNĐ</span>
+                            <p class="d-flex total-price">
+                                <span>Code</span>
+                                <span id="coupon">---</span>
                             </p>
+                            <p class="d-flex total-price" id="discount">
+                                <label><input id="{{$total}}" placeholder="code" style="border: 1px solid goldenrod"
+                                              type="text"
+                                              name="code"></label>
+                                <span id="apply"
+                                      style="border: 1px solid goldenrod;background-color: goldenrod; color :white; cursor: pointer; text-align: center; height: 31px">Apply</span>
+                            </p>
+                            <hr>
+                            <p class="d-flex total-price">
+                                <span>SubTotal</span>
+                            <span id="total">{{$ship_fee != '' ? number_format($ship_fee + $total,0,',',',') : '---'}} VNĐ</span>
+                            </p>
+                            <div id="valueTotal">
+                                <input type="hidden" value="{{$ship_fee != '' ? $ship_fee + $total : $total}}" name="total">
+                            </div>
                             <button id="submit_cart" class="btn btn-primary py-3 px-4"
                                     style="color: white; margin-top: 28px">Đặt Hàng
                             </button>
@@ -220,6 +235,99 @@
 @section('script')
     <script>
         $(function () {
+            function call_code(ship = 0) {
+                $('#apply').on('click', function () {
+                    let discount = 0;
+                    let value = $("input[name = 'code']").val();
+                    $.ajax({
+                        url: "{{route('codeData')}}",
+                        method: 'GET',
+                        data: {
+                            value: value
+                        },
+                        success: function (res) {
+                            const format = new Intl.NumberFormat('en');
+                            let data = res.data;
+                            if (ship == 0) {
+                                if (res.type == 1) {
+                                    let subtotal = {{$ship_fee}} + {{$total}} - data;
+                                    console.log(subtotal);
+                                    let code = `Giảm ${format.format(data)} VNĐ`
+                                    let total = `${format.format(subtotal)} VNĐ`
+                                    $('#total').html(total)
+                                    let valueTotal = `<input type="hidden" value="${subtotal}" name="total">`
+                                    $('#valueTotal').html(valueTotal)
+                                    $('#coupon').html(code);
+                                } else if (res.type == 2) {
+                                    let subtotal = ({{$ship_fee}} + {{$total}}) - data * ({{$ship_fee}} + {{$total}}) / 100;
+                                    console.log(subtotal);
+                                    let code = `Giảm ${data} %`
+                                    let total = `${format.format(subtotal)} VNĐ`
+                                    $('#total').html(total)
+                                    let valueTotal = `<input type="hidden" value="${subtotal}" name="total">`
+                                    $('#valueTotal').html(valueTotal)
+                                    $('#coupon').html(code);
+                                } else {
+                                    alert('Mã giảm giá không tồn tại')
+                                }
+                            } else {
+                                if (res.type == 1) {
+                                    let subtotal = ship + {{$total}} - data;
+                                    console.log(subtotal);
+                                    let code = `Giảm ${format.format(data)} VNĐ`
+                                    let total = `${format.format(subtotal)} VNĐ`
+                                    $('#total').html(total)
+                                    let valueTotal = `<input type="hidden" value="${subtotal}" name="total">`
+                                    $('#valueTotal').html(valueTotal)
+                                    $('#coupon').html(code);
+                                } else if (res.type == 2) {
+                                    let subtotal = (ship + {{$total}}) - data * (ship + {{$total}}) / 100;
+                                    console.log(subtotal);
+                                    let code = `Giảm ${data} %`
+                                    let total = `${format.format(subtotal)} VNĐ`
+                                    $('#total').html(total)
+                                    let valueTotal = `<input type="hidden" value="${subtotal}" name="total">`
+                                    $('#valueTotal').html(valueTotal)
+                                    $('#coupon').html(code);
+                                } else {
+                                    alert('Mã giảm giá không tồn tại')
+                                }
+                            }
+                        }
+                    })
+                })
+            }
+
+            call_code();
+
+            function call_ship() {
+                $("select[name = 'district_id']").on('change', function () {
+                    let value = $(this).val();
+                    if (value != 0) {
+                        let url = "{{route('shipData')}}"
+                        $.ajax({
+                            url: url,
+                            method: 'GET',
+                            data: {
+                                data: value
+                            },
+                            success: function (res) {
+                                const format = new Intl.NumberFormat('en');
+                                let data = res.data;
+                                let subtotal = data.ship_fee + {{$total}};
+                                let ship = `${format.format(data.ship_fee)} VNĐ`
+                                $('#ship').html(ship)
+                                let total = `${format.format(subtotal)} VNĐ`
+                                $('#total').html(total)
+                                let valueTotal = `<input type="hidden" value="${subtotal}" name="total">`
+                                $('#valueTotal').html(valueTotal)
+                                call_code(data.ship_fee);
+                            }
+                        })
+                    }
+                })
+            }
+
             function call_address() {
                 $("select[name = 'region_id']").on('change', function () {
                     let value = $(this).val();
@@ -270,32 +378,7 @@
                         })
                     }
                 })
-
-                $("select[name = 'district_id']").on('change', function () {
-                    let value = $(this).val();
-                    if (value != 0) {
-                        let url = "{{route('shipData')}}"
-                        $.ajax({
-                            url: url,
-                            method: 'GET',
-                            data: {
-                                data: value
-                            },
-                            success: function (res) {
-                                const format = new Intl.NumberFormat('en');
-                                let data = res.data;
-                                let subtotal = data.ship_fee + {{$total}};
-                                console.log(data);
-                                let ship = `<span>Ship Fee</span>
-                                <span>${format.format(data.ship_fee)} VNĐ</span>`
-                                $('#ship').html(ship)
-                                let total = `<span>Total</span>
-                                <span>${format.format(subtotal)} VNĐ</span>`
-                                $('#total').html(total)
-                            }
-                        })
-                    }
-                })
+                call_ship();
             }
 
             call_address();
@@ -347,8 +430,6 @@
                 $('#addressPresent').remove();
                 call_address();
             });
-
-
         })
 
     </script>

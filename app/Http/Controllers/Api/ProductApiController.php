@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Code;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Rating;
 use Illuminate\Http\Request;
 
 class ProductApiController extends Controller
@@ -35,13 +36,16 @@ class ProductApiController extends Controller
     public function codeData(Request $request)
     {
         $new_order = new Order();
-        $code = $new_order->discount_code($request->data);
+        $code = $new_order->discount_code($request->value);
         $discount = 0;
+        $type = '';
         if ($code) {
             $discount = $code->discount;
+            $type = $code->type;
         }
         return response()->json([
             'data' => $discount,
+            'type'=>$type,
             'status' => 200
         ]);
     }
@@ -153,6 +157,14 @@ class ProductApiController extends Controller
     }
 
 
+    public function loadRating(Request $request){
+        $new_rating = new Rating();
+        $new_rating->add_new($request);
+        return response()->json([
+            'data'=>$request,
+            'status'=>200
+        ]);
+    }
 
 
 }

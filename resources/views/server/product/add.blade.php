@@ -30,7 +30,6 @@
             <textarea name="product_description" class="form-control"></textarea><br>
             <b>Category *</b><span id="error_category"
                                    style="padding-left: 12px;font-size: 14px; color: red"></span>
-
             <select name="category_id" class="form-control">
                 <option disabled selected value="0">Chọn Danh Mục</option>
                 @if(count($data_category) > 0)

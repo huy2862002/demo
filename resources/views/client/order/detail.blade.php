@@ -4,47 +4,28 @@
 <div class="row"></div>
 @endsection
 @section('content')
-@if(count($order_detail) > 0)
+@if(count($detail) > 0)
 <section class="ftco-section ftco-cart">
     <div class="container">
         <div class="row">
             <div class="col-md-12 ftco-animate">
                 <div class="cart-list">
-                    <table class="table">
-                        <thead class="">
-                            <tr class="text-center">
-                                <th></th>
-                                <th>Tên Sản Phẩm</th>
-                                <th>Đơn Giá</th>
-                                <th>Số Lượng</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($order_detail as $item)
-                            <tr class="text-center">
-                            <td class="product-name">
-                                    <img width="100px" height="100px" src="{{asset($item->avatar)}}" alt="">
-                                </td>
-                                <td class="product-name">
-                                    <h3>#{{$item->name}}</h3>
-                                </td>
-                                <td class="price">
-                                    <span>{{number_format($item->price,0,'.','.')}} VNĐ</span>
-                                </td>
-                                <td class="quantity">
-                                    <span>{{$item->quantity}}</span>
-                                </td>
-                            </tr><!-- END TR-->
+                            @foreach($detail as $item)
+                                    <img width="100px" height="100px" src="{{asset($item->image)}}" alt="">
+                                <span style="margin-left: 31px">{{$item->productName}}</span>
+                                    @foreach($att_opt as $opt)
+                                        @if(in_array($opt->id, explode(' ', $item->option_id)))
+                                            <span style="margin-left: 90px">{{$opt->value}}</span>
+                                        @endif
+                                    @endforeach
+                                    <span style="margin-left: 90px">Số lượng : {{$item->quantity}}</span>
+                        <span style="margin-left: 90px"><b style="color: orangered">Tổng : {{number_format($item->total_money,0,'.','.')}} VNĐ</b></span>
                             @endforeach
-                        </tbody>
-                    </table>
 
                 </div>
             </div>
         </div>
     </div>
 </section>
-@else
-<h3 style="color: red;text-align:center;margin-bottom:31px">Bạn Chưa Có Đơn Hàng Nào !</h3>
 @endif
 @endsection

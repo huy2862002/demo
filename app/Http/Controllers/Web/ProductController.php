@@ -10,6 +10,7 @@ use App\Models\AttributeProduct;
 use App\Models\AttributeProductOption;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 
@@ -32,6 +33,12 @@ class ProductController extends Controller
 
     public function detail(Product $product) // Chi tiết sản phẩm
     {
+        $new_rating = new Rating();
+        $rating_data = $new_rating->get_w_product_id($product->id);
+        $rating = null;
+        if (count($rating_data) > 0) {
+            $rating = $rating_data;
+        }
         if (!Cookie::get($product->id)) {
             $product->view += 1;
             $product->save();
@@ -81,7 +88,8 @@ class ProductController extends Controller
             'info_other' => $info_other,
             'opt' => $opt,
             'normal' => $normal,
-            'default' => $default
+            'default' => $default,
+            'rating' => $rating
         ]);
     }
 }

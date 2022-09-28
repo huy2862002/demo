@@ -4,23 +4,48 @@
 @endsection
 @section('content')
    @if($list_order != null)
-<div class="container">
-    <table class="table table-striped">
+<div class="container" style="text-align: center; margin: 0 auto">
+    <table>
         <thead>
         <tr>
-            <th scope="col">#ID</th>
-            <th scope="col">Total Money</th>
-            <th scope="col">Purchase Date</th>
-            <th scope="col">Status</th>
+            <th style="padding: 31px; text-align: center" scope="col">#ID</th>
+            <th style="padding: 31px; text-align: center" scope="col">Total Money</th>
+            <th style="padding: 31px; text-align: center" scope="col">Purchase Date</th>
+            <th style="padding: 31px; text-align: center" scope="col">Status</th>
+            <th style="padding: 31px; text-align: center" scope="col">#</th>
+            <th style="padding: 31px; text-align: center" scope="col">#</th>
         </tr>
         </thead>
         <tbody>
         @foreach($list_order as $item)
         <tr>
-            <td>{{$item->id}}</td>
-            <td>{{number_format($item->total_money, 0, '.', '.')}} VNĐ</td>
-            <td>{{date('d-m-Y', $item->created_at)}}</td>
-            <td>{{config('orderStatus.'.$item->status)}}</td>
+            <td style="padding: 31px; text-align: center">#{{$item->id}}</td>
+            <td style="padding: 31px; text-align: center">{{number_format($item->total_money, 0, '.', '.')}} VNĐ <br>
+                @if($item->status == 0)
+                    <a style="margin-top: 31px" href="{{route('payment', $item->id)}}">Thanh toán</a>
+                @endif
+            </td>
+
+            <td style="padding: 31px; text-align: center">{{date('d-m-Y', $item->created_at)}}</td>
+            @if($item->status == 0)
+                <td><div style="color: blue"><b>{{config('orderStatus.'.$item->status)}}</b></div></td>
+            @elseif($item->status == 1)
+                <td><div style="color: green"><b>{{config('orderStatus.'.$item->status)}}</b></div></td>
+            @elseif($item->status == 2)
+                <td><div style="color: blue"><b>{{config('orderStatus.'.$item->status)}}</b></div></td>
+            @elseif($item->status == 3)
+                <td><div style="color: green"><b>{{config('orderStatus.'.$item->status)}}</b></div></td>
+            @elseif($item->status == 4)
+                <td><div style="color: red"><b>{{config('orderStatus.'.$item->status)}}</b></div></td>
+            @else
+                <td><div>---</div></td>
+            @endif
+            <td style="padding: 31px; text-align: center"><a href="{{route('detailOrder', $item->id)}}"><div style="background-color: blueviolet; width: 100px; color: white; border-radius: 6px; padding: 3px 0">Detail</div></a></td>
+            @if($item->status == 0)
+                <td style="padding: 31px; text-align: center"><a href="{{route('cancelOrder', $item->id)}}"><div style="cursor:pointer;background-color: goldenrod; width: 150px; color: white; border-radius: 6px; padding: 3px 0">Cancel Order</div></a></td>
+            @else
+                <td style="padding: 31px; text-align: center; color: red">------</td>
+            @endif
         </tr>
         @endforeach
         </tbody>

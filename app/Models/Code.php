@@ -12,6 +12,7 @@ class Code extends Model
     protected $table = 'discount_code';
     protected $fillable = [
         'discount',
+        'type',
         'code',
         'quantity',
         'start',
@@ -25,6 +26,13 @@ class Code extends Model
         return $code;
     }
 
+    public function code_order($id){
+        $code = Code::select('discount_code.*')
+            ->where('id', '=', $id)
+            ->first();
+        return $code;
+    }
+
     public function add_new($code, $discount,$quantity, $start, $end){
         $new = new Code();
         $new->code = $code;
@@ -34,4 +42,5 @@ class Code extends Model
         $new->end = $end;
         $new->save();
     }
+
 }

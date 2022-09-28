@@ -69,6 +69,7 @@
                         </div>
                     </div>
             </form>
+
         @if(count($data_opt_product) > 0)
             <div style="padding: 12px">
                 <table class="table table-striped">

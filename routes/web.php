@@ -41,12 +41,13 @@ Route::post('add-to-cart/{product}', [CartController::class, 'addToCart'])->name
 Route::get('gio-hang', [CartController::class, 'showCart'])->name('showCart');
 Route::delete('xoa-gio-hang/{id}', [CartController::class, 'delCart'])->name('delCart');
 Route::post('check-out', [\App\Http\Controllers\Client\OrderController::class, 'checkout'])->name('checkout');
-Route::get('thanh-toan/{order}', [\App\Http\Controllers\Client\OrderController::class, 'payment'])->name('payment');
+Route::get('payment/{order}', [\App\Http\Controllers\Client\OrderController::class, 'payment'])->name('payment');
 Route::post('xư-ly-thanh-toan/{order}', [\App\Http\Controllers\PaymentMethod\VnpayController::class, 'handle'])->name('handle');
-Route::get('payment-results', [\App\Http\Controllers\PaymentMethod\VnpayController::class, 'payment_results'])->name('payment_results');
 Route::get('don-hang', [\App\Http\Controllers\Client\OrderController::class, 'list'])->name('order');
-Route::get('chi-tiet-don-hang/{order}', [CartController::class, 'detail'])->name('orderDetail');
-Route::get('huy-don-hang/{order}', [CartController::class, 'cancelOrder'])->name('cancel');
+Route::get('IPN',[\App\Http\Controllers\PaymentMethod\VnpayController::class,'IPN'])->name('IPN');
+Route::get('detail-order/{order}', [\App\Http\Controllers\Client\OrderController::class, 'detail'])->name('detailOrder');
+Route::get('cancel-order/{order}', [\App\Http\Controllers\Client\OrderController::class, 'cancel'])->name('cancelOrder');
+
 Route::prefix('san-pham')->name('product.')->group(function () {
     Route::get('', [\App\Http\Controllers\Web\ProductController::class, 'list'])->name('list');
     Route::get('chi-tiet/{product}', [\App\Http\Controllers\Web\ProductController::class, 'detail'])->name('detail');
@@ -121,3 +122,5 @@ Route::prefix('quan-tri')->name('server.')->group(function () {
         Route::get('them-bien-the', [AttributeController::class, 'addVariant'])->name('addVariant');
     });
 });
+
+

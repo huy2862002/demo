@@ -42,7 +42,7 @@
         <div class="row">
             @foreach($latest_product as $item)
             <div class="col-sm col-md-12 col-lg ftco-animate">
-                <form action="" method="post">
+                <form action="{{route('addToCart', $item->id)}}" method="post">
                     @csrf
                     <div class="product">
                         <a href="{{route('product.detail', $item->id)}}" class="img-prod"><img class="img-fluid" src="{{asset($item->image)}}" alt="Colorlib Template">

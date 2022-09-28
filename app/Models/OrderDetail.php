@@ -36,10 +36,26 @@ class OrderDetail extends Model
     {
         $detail = OrderDetail::join('orders', 'orders.id', 'order_details.order_id')
             ->join('attribute_product_options', 'attribute_product_options.id', 'order_details.product_id')
-            ->select('orders.*', 'order_details.*', 'attribute_product_options.*')
+            ->join('products', 'products.id', 'attribute_product_options.product_id')
+            ->select('orders.*', 'order_details.*', 'attribute_product_options.*', 'products.name as productName')
             ->where('order_id', '=', $order_id)
             ->get();
         return $detail;
     }
 
+    public function get_all()
+    {
+        $detail = OrderDetail::join('orders', 'orders.id', 'order_details.order_id')
+            ->join('attribute_product_options', 'attribute_product_options.id', 'order_details.product_id')
+            ->select('orders.*', 'order_details.*', 'attribute_product_options.*')
+            ->get();
+        return $detail;
+    }
+
+    public function get_with_order_id($order_id){
+        $detail = OrderDetail::select('order_details.*')
+            ->where('order_id', '=', $order_id)
+            ->get();
+        return $detail;
+    }
 }

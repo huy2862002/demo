@@ -35,23 +35,6 @@ class OrderController extends Controller
         ]);
     }
 
-    public function export(Order $order)
-    {
-        $new_detail = new OrderDetail();
-        $order_detail = $new_detail->order_detail($order->id);
-        $data = [
-            'title' => 'Thank you for shopping at QWERTY Shop !',
-            'info' => $order_detail,
-            'order' => $order
-        ];
-
-        $pdf = PDF::loadView('server.order.exportPDF', $data);
-
-
-        return $pdf->stream('hoa-don.pdf');
-    }
-
-
     public function delivering(Order $order)
     {
         $order->status = 2;

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
+use App\Models\AttributeOption;
+use App\Models\AttributeProductOption;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderDetail;
@@ -19,8 +21,6 @@ class OrderController extends Controller
     {
         $new_address = new Address();
         $new_order = new Order();
-        $new_cart = new Cart();
-        $new_ship = new Ship();
         $new_detail = new OrderDetail();
         if ($request->address_id) {
             $old_address = $new_address->get_address_with_id($request->address_id);
@@ -42,23 +42,20 @@ class OrderController extends Controller
                 }
             }
         }
-        $total = $new_cart->get_total(session()->get('cart'));
-        $ship_fee = $new_ship->ship_fee($address['district_id'])->ship_fee;
-        $total_money = $total + $ship_fee;
+        $total_money = $request->total;
         $id = $new_order->add_new($request->user_name, $request->phone_number, $request->email, $address, $total_money);
 
         foreach (session('cart') as $item) {
             $new_detail->add_new($id, $item['id'], $item['quantity']);
         }
-
         return redirect()->route('payment', $id);
     }
 
 
     public function payment(Order $order)
     {
-        $new_detail = new OrderDetail();
         $new_order = new Order();
+        $new_detail = new OrderDetail();
         $address = $new_order->get_with_id($order->id);
         $detail = $new_detail->order_detail($order->id);
         return view('client.order.payment',[
@@ -77,7 +74,24 @@ class OrderController extends Controller
             $list_order = null;
         }
         return view('client.order.list', [
-            'list_order'=>$list_order
+            'list_order'=>$list_order,
         ]);
+    }
+
+    public function cancel(Order $order){
+        $order->status = 4;
+        $order->save();
+        return redirect()->back();
+    }
+
+    public function detail(Order $order){
+        $new_detail = new OrderDetail();
+        $detail = $new_detail->order_detail($order->id);
+        $new_att_opt = new AttributeOption();
+        $att_opt = $new_att_opt->get_all();
+       return view('client.order.detail',[
+           'detail'=>$detail,
+           'att_opt'=>$att_opt
+       ]);
     }
 }

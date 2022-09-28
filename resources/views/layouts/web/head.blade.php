@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <title>QWERTY SHOP</title>
     <meta charset="utf-8">
-      <link rel="icon" type="image/x-icon" href="{{asset('server/dist/img/AdminLTELogo.png')}}">
+    <link rel="icon" type="image/x-icon" href="{{asset('server/dist/img/AdminLTELogo.png')}}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 
     <link rel="stylesheet" href="{{asset('web/css/open-iconic-bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('web/css/animate.css')}}">
@@ -27,4 +30,4 @@
     <link rel="stylesheet" href="{{asset('web/css/flaticon.css')}}">
     <link rel="stylesheet" href="{{asset('web/css/icomoon.css')}}">
     <link rel="stylesheet" href="{{asset('web/css/style.css')}}">
-  </head>
+</head>
