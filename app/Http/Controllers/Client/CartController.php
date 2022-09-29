@@ -9,16 +9,12 @@ use App\Models\AttributeOption;
 use App\Models\AttributeProduct;
 use App\Models\AttributeProductOption;
 use App\Models\Cart;
-use App\Models\District;
-use App\Models\Order;
-use App\Models\OrderDetail;
 use App\Models\Product;
-use App\Models\Province;
 use App\Models\Region;
 use App\Models\Ship;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
+
 
 class CartController extends Controller
 {

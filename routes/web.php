@@ -11,6 +11,7 @@ use App\Http\Controllers\Server\AttributeController;
 use App\Http\Controllers\Server\ProductController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Server\ShipController;
+use App\Http\Controllers\Server\UserController;
 use App\Http\Controllers\Web\OrderController as WebOrderController;
 use App\Http\Controllers\Web\ProductController as WebProductController;
 use Illuminate\Support\Facades\Route;
@@ -92,6 +93,10 @@ Route::prefix('quan-tri')->name('server.')->group(function () {
         Route::get('success/{order}', [OrderController::class, 'success'])->name('success');
     });
 
+    Route::prefix('user')->name('user.')->group(function () {
+        Route::get('', [UserController::class, 'list'])->name('list');
+    });
+
     Route::prefix('phan-tich')->name('analysis.')->group(function () {
         Route::get('don-hang', [AnalysisController::class, 'order'])->name('order');
         Route::get('san-pham', [AnalysisController::class, 'product'])->name('product');
@@ -107,6 +112,7 @@ Route::prefix('quan-tri')->name('server.')->group(function () {
         Route::get('', [CodeController::class, 'list'])->name('list');
         Route::get('them-moi', [CodeController::class, 'addForm'])->name('addForm');
         Route::post('them-moi', [CodeController::class, 'postAdd'])->name('postAdd');
+        Route::get('delete/{code}', [CodeController::class, 'delete'])->name('delete');
     });
 
     Route::prefix('thuoc-tinh')->name('att.')->group(function () {

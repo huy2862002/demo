@@ -13,7 +13,7 @@
         <div class="block-18 text-center">
             <div class="text">
                 <strong class="number" data-number="20">0</strong>
-                <span>Evaluate</span>
+                <span>Rating</span>
             </div>
         </div>
     </div>

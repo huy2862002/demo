@@ -14,14 +14,14 @@ class CodeController extends Controller
     {
         $new_Order = new Order();
         $code_list = $new_Order->code_list();
-        return view('server.order.code_list', [
+        return view('server.code.list', [
             'code_list' => $code_list
         ]);
     }
 
     public function addForm()
     {
-        return view('server.order.add_code');
+        return view('server.code.add');
     }
 
     public function postAdd(Request $request){
@@ -33,7 +33,12 @@ class CodeController extends Controller
         $start =  strtotime($request->start);
         $end =   strtotime($request->end);
 
-       $new_code->add_new($request->code, $request->discount, $request->quantity, $start, $end);
-        return redirect()->route('server.code.addForm')->with('success', 'Thêm Mới Mã Code Thành Công');
+       $new_code->add_new($request, $start, $end);
+        return redirect()->route('server.code.addForm')->with('success', 'Add Successfully !');
+    }
+
+    public function delete(Code $code){
+        $code->delete();
+        return redirect()->back()->with('success', 'Delete Successfully !');
     }
 }

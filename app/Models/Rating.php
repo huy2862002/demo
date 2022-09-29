@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Rating extends Model
 {
@@ -34,7 +35,23 @@ class Rating extends Model
     }
 
     public function get_w_product_id($product_id){
-        $data = Rating::select('ratings.*')->where('product_id', $product_id)->get();
+        $data = Rating::select('ratings.*')->where('product_id', $product_id)
+            ->orderBy('created_at', 'desc')
+            ->limit(4)
+            ->get();
+        return $data;
+    }
+
+    public function get_count($product_id){
+        $data = Rating::where('product_id', $product_id)
+            ->count();
+        return $data;
+    }
+
+    public function sum_star($product_id){
+        $data = DB::table('ratings')
+                ->select( DB::raw('SUM(star) as total_star'))
+                ->first();
         return $data;
     }
 }

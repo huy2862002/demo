@@ -24,21 +24,27 @@
                     </div>
                     <div class="col-lg-6 product-details pl-md-5 ftco-animate">
                         <div class="rating d-flex">
-                            <p class="text-left mr-4">
-                                <a href="#" class="mr-2">5.0</a>
-                                <a href="#"><span class="ion-ios-star-outline"></span></a>
-                                <a href="#"><span class="ion-ios-star-outline"></span></a>
-                                <a href="#"><span class="ion-ios-star-outline"></span></a>
-                                <a href="#"><span class="ion-ios-star-outline"></span></a>
-                                <a href="#"><span class="ion-ios-star-outline"></span></a>
+                            <p class="text-left mr-8">
+                                @if($total_star !=null && $count_rating !=0 )
+                            <b style="color: orange" class="mr-2">{{round($total_star / $count_rating, 1)}}</b>
+                                <div class="star-vote">
+                                
+                                                  <div class="star-style rating_s"
+                                                       style="background-image: url(https://meter.com.vn//static/imgs/5star1.png); width:{{(round($total_star / $count_rating, 1)/5 *100)+12}}%"></div>
+                                                  <div class="star-style star_background"
+                                                       style="background-image: url(https://meter.com.vn//static/imgs/5star2.png);"></div>
+                                              </div>
+                                              @else
+                                              <span style="color: orange;">Sản phẩm chưa có đánh giá</span>
+                                              @endif
                             </p>
-                            <p class="text-left mr-4">
-                                <a href="#" class="mr-2" style="color: #000;">100 <span
-                                        style="color: #bbb;">Đánh giá</span></a>
+                            <p class="text-left mr-4" style="margin-left:31px">
+                                <span class="mr-2" style="color: #000;">{{$count_rating}} <span
+                                        style="color: #bbb;">Đánh giá</span></span>
                             </p>
                             <p class="text-left">
-                                <a href="#" class="mr-2" style="color: #000;">500 <span
-                                        style="color: #bbb;">Đã bán</span></a>
+                                <span class="mr-2" style="color: #000;">500 <span
+                                        style="color: #bbb;">Đã bán</span></span>
                             </p>
                         </div>
                         @if($default)
@@ -217,9 +223,9 @@
                 <div class="bg-light p-30">
                     <hr>
                     <div class="tab-content" style="display: grid; grid-template-columns: 1fr 1fr;grid-gap: 12px">
-                        <div class="tab-pane fade show active" id="tab-pane-1" style="padding: 66px">
+                        <div class="tab-pane fade show active"  style="padding: 66px">
                             <b style="font-size: 20px; color: blueviolet" class="mb-3">Đánh giá</b><br>
-                            @if($rating != null)
+                            @if($rating != null )
                                 @foreach($rating as $r)
                             <b class="mb-3">{{$r->user_name}}</b><span> {{date('d-m-Y', $r->created_at)}}</span>
                                     @for($i=$r->star;$i>=1;$i--)
@@ -227,6 +233,7 @@
                                     @endfor
                             <p>{{$r->content}}</p>
                                 @endforeach
+                                <a href="">Xem Tất Cả Đánh Giá -></a>
                             @else
                                 <b style="color: orange" class="mb-3">Chưa có đánh giá nào</b>
                             @endif

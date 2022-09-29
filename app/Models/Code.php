@@ -33,11 +33,12 @@ class Code extends Model
         return $code;
     }
 
-    public function add_new($code, $discount,$quantity, $start, $end){
+    public function add_new($request, $start, $end){
         $new = new Code();
-        $new->code = $code;
-        $new->discount = $discount;
-        $new->quantity = $quantity;
+        $new->code = $request->code;
+        $new->discount = $request->discount;
+        $new->quantity = $request->quantity;
+        $new->type = $request->type;
         $new->start = $start;
         $new->end = $end;
         $new->save();

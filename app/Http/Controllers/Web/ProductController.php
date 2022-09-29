@@ -44,6 +44,8 @@ class ProductController extends Controller
             $product->save();
             Cookie::queue($product->id, $product, 30);
         }
+        $total_star = $new_rating->sum_star($product->id)->total_star;
+        $count_rating = $new_rating->get_count($product->id);
         $new_product = new Product();
         $new_att = new Attribute();
         $new_att_opt = new AttributeOption();
@@ -89,7 +91,9 @@ class ProductController extends Controller
             'opt' => $opt,
             'normal' => $normal,
             'default' => $default,
-            'rating' => $rating
+            'rating' => $rating,
+            'count_rating'=>$count_rating,
+            'total_star'=>$total_star
         ]);
     }
 }

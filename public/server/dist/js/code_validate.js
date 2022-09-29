@@ -3,6 +3,9 @@ $(function () {
                 if ($(this).val().trim() != '') {
                     let error = ``;
                     $('#error_code').html(error);
+                }else{
+                    let error = `Vui lòng nhập mã code`;
+                    $('#error_code').html(error);
                 }
             })
             $("input[name = 'quantity']").on('keyup', function () {
@@ -17,11 +20,11 @@ $(function () {
                 }
             })
             $("input[name = 'discount']").on('keyup', function () {
-                if (100 > $(this).val() > 0) {
+                if ($(this).val() > 0) {
                     let error = ``;
                     $('#error_dis').html(error);
                 } else {
-                    let error = `Cần nhập số % phù hợp`;
+                    let error = `Cần nhập mức giảm phù hợp phù hợp`;
                     $('#error_dis').html(error);
                 }
             })
@@ -50,7 +53,7 @@ $(function () {
                     check = false;
                 }
                 if ($("input[name = 'discount']").val().trim() == '') {
-                    let error = `Vui lòng nhập mức % giảm giá`;
+                    let error = `Vui lòng nhập mức giảm giá`;
                     $('#error_dis').html(error);
                     check = false;
                 }
@@ -63,6 +66,13 @@ $(function () {
                     let error = `Vui lòng chọn ngày đóng hạn`;
                     $('#error_end').html(error);
                     check = false;
+                }
+                if (check == false) {
+                    let error = `<div style="border: 1px solid #f64848; background-color: #f64848;margin-bottom: 12px; color: white; text-align: center; padding: 6px">
+                <b>Error !</b>
+            </div>`
+                    $('#status_form').html(error);
+                    window.scrollTo(0, 0);
                 }
                 return check;
             });

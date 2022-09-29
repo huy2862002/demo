@@ -58,6 +58,7 @@ $(function () {
         <b>Error !</b>
     </div>`
             $('#status_form').html(error);
+            window.scrollTo(0, 0);
         }
         return check;
         ;

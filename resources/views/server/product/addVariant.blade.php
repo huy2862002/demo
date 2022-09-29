@@ -113,9 +113,9 @@
                         <td><input type="number" name="inventory" id="{{$item->id}}" value="{{$item->inventory}}" class="form-control"></td>
                         <td>
                             @if($item->status == 0)
-                                <input name="default" checked type="radio" class="form-group">
+                                <input value="{{$item->id}}" class="default" name="default" checked type="radio" class="form-group">
                             @else
-                                <input name="default" type="radio" class="form-group">
+                                <input value="{{$item->id}}" class="default" name="default" type="radio" class="form-group">
                             @endif
                         </td>
                         <td><input name="hidden" type="checkbox" class="form-group"></td>
@@ -216,6 +216,22 @@
                 }
             });
         });
+
+        $(".default").on('click', function(){
+            let id  = $(this).attr('value');
+            $.ajax({
+                url:"{{route('primarySetup')}}",
+                method:'put',
+                data:{
+                    id:id,
+                    proId:{{$product->id}}
+                },success:function(res){
+                    alert('successfully')
+                },error:function(e){
+                    alert('error')
+                }
+            })
+        })
     })
 </script>
 @endsection
